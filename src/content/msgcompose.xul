@@ -2,25 +2,22 @@
 
 <?xml-stylesheet type="text/css" href="chrome://global/skin/" ?>
 <?xml-stylesheet type="text/css"
-  href="chrome://ThunderBird-Multi-Accounts-Manager/skin/msgcompose.css" ?>
+  href="chrome://ThunderBird-Multi_Accounts_Manager/skin/msgcompose.css" ?>
 
 <!DOCTYPE overlay SYSTEM
-  "chrome://ThunderBird-Multi-Accounts-Manager/locale/msgcompose.dtd">
+  "chrome://ThunderBird_Multi_Accounts_Manager/locale/msgcompose.dtd">
 
 <overlay id="msgcompose-overlay"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <script type="application/x-javascript"
-    src="chrome://ThunderBird-Multi-Accounts-Manager/content/msgcompose.js" />
+    src="chrome://ThunderBird_Multi_Accounts_Manager/content/msgcompose.js" />
 
-  <script type="application/x-javascript"
-    src="chrome://ThunderBird-Multi-Accounts-Manager/content/msginit.js" />
 
   <stringbundleset id="stringbundleset">
     <stringbundle id="msgcompose-string-bundle"
-      src="chrome://ThunderBird-Multi-Accounts-Manager/locale/msgcompose.properties" />
+      src="chrome://ThunderBird_Multi_Accounts_Manager/locale/msgcompose.properties" />
   </stringbundleset>
-
 
 
   <!-- More overlay stuff. -->

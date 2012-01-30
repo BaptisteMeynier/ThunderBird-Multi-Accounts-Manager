@@ -4,7 +4,7 @@
   xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 
   <Description about="urn:mozilla:install-manifest">
-    <em:id>projetIndus@ThunderBird-Multi-Accounts-Manager.com</em:id>
+    <em:id>projetIndus@ThunderBird_Multi_Accounts_Manager.com</em:id>
     <em:name>ThunderBird Multi Accounts Manager</em:name>
     <em:description>Extend Thunderbird to help a user with multiple accounts, to detect if he uses the wrong account to send a mail to a correspondent.!</em:description>
     <em:version>0.1</em:version>
@@ -12,7 +12,7 @@
     <em:creator>Maxime Denoyer</em:creator>
     <em:creator>Johan Jans</em:creator>
     <em:creator>Mustapha Oucheikh</em:creator>
-    <em:homepageURL>http://baptistemeynier.github.com/ThunderBird-Multi-Accounts-Manager/</em:homepageURL>
+    <em:homepageURL>http://baptistemeynier.github.com/ThunderBird_Multi_Accounts_Manager/</em:homepageURL>
     <em:type>2</em:type>
 
     <!-- Mozilla Firefox -->
@@ -20,7 +20,7 @@
       <Description>
         <em:id>{3550f703-e582-4d05-9a08-453d09bdfdc6}</em:id>
         <em:minVersion>3.0</em:minVersion>
-        <em:maxVersion>8.*</em:maxVersion>
+        <em:maxVersion>9.*</em:maxVersion>
       </Description>
     </em:targetApplication>
   </Description>
