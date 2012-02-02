@@ -4,9 +4,9 @@
   xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 
   <Description about="urn:mozilla:install-manifest">
-    <em:id>projetIndus@ThunderBird_Multi_Accounts_Manager.com</em:id>
+    <em:id>projetIndus@ThunderBirdMultiAccountsManager.com</em:id>
     <em:name>ThunderBird Multi Accounts Manager</em:name>
-    <em:description>Extend Thunderbird to help a user with multiple accounts, to detect if he uses the wrong account to send a mail to a correspondent.!</em:description>
+    <em:description>To extend Thunderbird to help a user with multiple accounts, to detect if he uses the wrong account to send a mail to a correspondent.!</em:description>
     <em:version>0.1</em:version>
     <em:creator>Baptiste Meynier</em:creator>
     <em:creator>Maxime Denoyer</em:creator>

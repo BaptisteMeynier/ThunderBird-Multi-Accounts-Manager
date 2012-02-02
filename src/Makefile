@@ -1,11 +1,11 @@
 # The name of the extension.
-extension_name := ThunderBird_Multi_Accounts_Manager
+extension_name := ThunderBirdMultiAccountsManager
 
 # The UUID of the extension.
-extension_uuid := projetIndus@ThunderBird_Multi_Accounts_Manager.com
+extension_uuid := projetIndus@ThunderBirdMultiAccountsManager.com
 
 # The name of the profile dir where the extension can be installed.
-profile_dir := ThunderBird_Multi_Accounts_Manager
+profile_dir := ThunderBirdMultiAccountsManager
 
 # The zip application to be used.
 ZIP := zip
