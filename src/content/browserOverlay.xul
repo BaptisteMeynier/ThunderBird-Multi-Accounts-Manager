@@ -10,12 +10,16 @@
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <script type="application/x-javascript"
-    src="chrome://ThunderBirdMultiAccountsManager/content/browserOverlay.js" />
+    src="chrome://ThunderBirdMultiAccountsManager/content/managerDialog.js" />
+  
+  <script type="application/x-javascript"
+    src="chrome://ThunderBirdMultiAccountsManager/content/utilsDB.js" />
 
   <stringbundleset id="stringbundleset">
     <stringbundle id="browser-string-bundle"
       src="chrome://ThunderBirdMultiAccountsManager/locale/ThunderBirdMultiAccountsManager.properties" />
   </stringbundleset>
+  
 
   <menubar id="mail-menubar">
     <menu id="tasksMenu">

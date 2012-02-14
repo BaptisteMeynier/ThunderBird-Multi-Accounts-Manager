@@ -15,6 +15,7 @@
   <script type="application/x-javascript"
     src="chrome://ThunderBirdMultiAccountsManager/content/managerDialog.js" />
   
+  
   <vbox>
     <toolbar id="ThunderBirdMultiAccountsManager-manager-toolbar"
              toolbarname="&ThunderBirdMultiAccountsManager.manager.toolbar.name;"

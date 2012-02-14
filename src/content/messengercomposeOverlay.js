@@ -34,6 +34,10 @@ function CheckValidEmailAddress(to, cc, bcc)
     
     return prompts.confirm(window, title, message);
   }
+  else{
+   return true;
+  }
 
 }
+
 
