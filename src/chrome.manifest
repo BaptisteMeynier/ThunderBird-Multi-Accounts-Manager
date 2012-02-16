@@ -1,6 +1,7 @@
 content   ThunderBirdMultiAccountsManager                content/
 skin      ThunderBirdMultiAccountsManager  classic/1.0   skin/
 locale    ThunderBirdMultiAccountsManager  en-US         locale/en-US/
+resource  ThunderBirdMultiAccountsManager                modules/
 
 overlay chrome://messenger/content/messengercompose/messengercompose.xul chrome://ThunderBirdMultiAccountsManager/content/messengercomposeOverlay.xul
 

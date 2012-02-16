@@ -19,45 +19,28 @@ Cu.import("resource://gre/modules/FileUtils.jsm");
 */
 XULUtils.DB = {
 
-  dBName : "ThunderBirdMultiAccountsManager.sqlite",
+  _dBName : "ThunderBirdMultiAccountsManager.sqlite",
   
-  directory : "ProfD",
+  _directory : "ProfD",
   
   main : function()
   {
-    
- 
-      this.createDB();
-      this.insertAccount("Baptiste Meynier", "baptiste.meynier@gmail.com");
-      this.insertContact("Baptiste Meynier", "baptiste.meynier@gmail.com",1);
-      this.insertContact("Maxime Denoyer", "Maxime.Denoyer@gmail.com",1);
-      this.insertAccount("Johan Jans", "johan.jans@gmail.com");
-      this.insertContact("Quentin Duplaix", "Quentin.duplaix@gmail.com",2);
-      this.insertContact("Pauline Lopez", "Pauline.lopez@gmail.com",2);
-   /*   this.getAccounts();
-      this.getContactsFromAccount(1);
-      this.getContactsFromAccount(2);
-
-      this.contactFound('Maxime Denoyer','Maxime.Denoyer@gmaifgfgl.com');
-      this.contactFound('Maxime Denoyer','Maxime.Denoyer@gmail.com');      
-      this.contactFoundForAccount("Maxime Denoyer","maxime.denoyer@gmail.com",2);
-      this.deleteContact(1);
-      this.contactFoundForAccount("Baptiste Meynier", "baptiste.meynier@gmail.com",1);
-      this.deleteAccount(1);
-      this.getAccounts();
-      this.getAccountId("Johan Jans", "johan.jans@gmail.com");
-      this.updateContact(3,'Gerard Baste',"gerard.baste@gmail.com");
-      this.getContactsFromAccount(2);*/
-
+    this.initDB();
+    gAccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
+    .getService(Components.interfaces.nsIMsgAccountManager);
+      let identities = gAccountManager.allIdentities;
+      let identity = null;
+      for (let j = 0; j < identities.Count(); j++) {
+        name = identities.QueryElementAt(j, Components.interfaces.nsIMsgIdentity).fullName;
+        email = identities.QueryElementAt(j, Components.interfaces.nsIMsgIdentity).email;
+        this.insertAccount(name,email);
+      }
   },
   
-  createDB : function()
+  initDB : function()
   {
-    let file = FileUtils.getFile(this.directory, [this.dBName]);
+    let file = FileUtils.getFile(this._directory, [this._dBName]);
     let mDBConn = Services.storage.openDatabase(file);
-    
-    mDBConn.executeSimpleSQL("DROP TABLE IF EXISTS contact");
-    mDBConn.executeSimpleSQL("DROP TABLE IF EXISTS account");
     
     mDBConn.executeSimpleSQL(
         "CREATE TABLE IF NOT EXISTS account"+
@@ -78,43 +61,10 @@ XULUtils.DB = {
         ")");
     
     mDBConn.close();
-  },
-  
-  
-  getAccounts : function ()
-  {
-    let file = FileUtils.getFile(this.directory, [this.dBName]);
-    let mDBConn = Services.storage.openDatabase(file);
-    
-    let statement = mDBConn.createStatement("SELECT * FROM account");  
-    
-    statement.executeAsync({  
-      handleResult: function(aResultSet) {  
-        /*for (let row = aResultSet.getNextRow(); row; row = aResultSet.getNextRow())
-        {
-          let value1 = row.getResultByName("id_account");
-          let value2 = row.getResultByName("name_account");
-          let value3 = row.getResultByName("address_account");
-          alert("getAccounts : " + value1 + ", " + value2 + ", " + value3);
-        } */
-        
-        
-      },  
-  
-      handleError: function(aError) {  
-        print("Error: " + aError.message);  
-      },  
-  
-      handleCompletion: function(aReason) {  
-        if (aReason != Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED)  
-        print("Query canceled or aborted!");  
-      }  
-    });
-  },
-  
+  },  
   contactFound: function (name_contact, address_contact)
   {
-    let file = FileUtils.getFile(this.directory, [this.dBName]);
+    let file = FileUtils.getFile(this._directory, [this._dBName]);
     let mDBConn = Services.storage.openDatabase(file);
     
     let statement = mDBConn.createStatement(
@@ -140,7 +90,7 @@ XULUtils.DB = {
   
   contactFoundForAccount: function (name_contact, address_contact, id_account)
   {
-    let file = FileUtils.getFile(this.directory, [this.dBName]);
+    let file = FileUtils.getFile(this._directory, [this._dBName]);
     let mDBConn = Services.storage.openDatabase(file);
     
     let statement = mDBConn.createStatement(
@@ -169,7 +119,7 @@ XULUtils.DB = {
   
   insertAccount: function(name_account, address_account)
   {
-    let file = FileUtils.getFile(this.directory, [this.dBName]);
+    let file = FileUtils.getFile(this._directory, [this._dBName]);
     let mDBConn = Services.storage.openDatabase(file);
     
     mDBConn.executeSimpleSQL(
@@ -182,7 +132,7 @@ XULUtils.DB = {
   
   insertContact: function(name_contact, address_contact, id_account)
   {
-    let file = FileUtils.getFile(this.directory, [this.dBName]);
+    let file = FileUtils.getFile(this._directory, [this._dBName]);
     let mDBConn = Services.storage.openDatabase(file);
     
     mDBConn.executeSimpleSQL(
@@ -193,7 +143,7 @@ XULUtils.DB = {
     
   updateContact: function(id_contact, name_contact, address_contact)
   {
-    let file = FileUtils.getFile(this.directory, [this.dBName]);
+    let file = FileUtils.getFile(this._directory, [this._dBName]);
     let mDBConn = Services.storage.openDatabase(file);
     
     mDBConn.executeSimpleSQL(
@@ -206,7 +156,7 @@ XULUtils.DB = {
   
   deleteAccount:function(id_account)
   {
-    let file = FileUtils.getFile(this.directory, [this.dBName]);
+    let file = FileUtils.getFile(this._directory, [this._dBName]);
     let mDBConn = Services.storage.openDatabase(file);
     
     mDBConn.executeSimpleSQL("DELETE FROM contact WHERE link_account = " + id_account);
@@ -216,7 +166,7 @@ XULUtils.DB = {
   
   deleteContact:function(id_contact)
   {
-    let file = FileUtils.getFile(this.directory, [this.dBName]);
+    let file = FileUtils.getFile(this._directory, [this._dBName]);
     let mDBConn = Services.storage.openDatabase(file);
     
     mDBConn.executeSimpleSQL("DELETE FROM contact WHERE id_contact = " + id_contact);

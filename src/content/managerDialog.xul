@@ -13,8 +13,16 @@
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" width="1000" height="300" minheight="200" minwidth="400">
 
   <script type="application/x-javascript"
+    src="chrome://ThunderBirdMultiAccountsManager/content/utilsDB.js" />  
+
+  <script type="application/x-javascript"
     src="chrome://ThunderBirdMultiAccountsManager/content/managerDialog.js" />
   
+  <stringbundleset id="stringbundleset">
+    <stringbundle id="manager-string-bundle"
+      src="chrome://ThunderBirdMultiAccountsManager/locale/ThunderBirdMultiAccountsManager.properties" />
+  </stringbundleset>
+
   
   <vbox>
     <toolbar id="ThunderBirdMultiAccountsManager-manager-toolbar"
@@ -25,7 +33,7 @@
       <toolbarbutton id="ThunderBirdMultiAccountsManager-manager-change" label="&ThunderBirdMultiAccountsManager.manager.toolbar.change;"
                      tooltiptext="" oncommand="XULAccountsManagerChrome.ManagerDialog.changeContact()" />
       <toolbarbutton id="ThunderBirdMultiAccountsManager-manager-delete" label="&ThunderBirdMultiAccountsManager.manager.toolbar.delete;"
-                     tooltiptext="" oncommand=""/>
+                     tooltiptext="" oncommand="XULAccountsManagerChrome.ManagerDialog.deleteContact()"/>
       <toolbarspring id="spring13281404973603" flex="1"/>
       <toolbarbutton id="ThunderBirdMultiAccountsManager-manager-smartscan"
                      label="&ThunderBirdMultiAccountsManager.manager.toolbar.smartscan;" tooltiptext="" oncommand=""/>

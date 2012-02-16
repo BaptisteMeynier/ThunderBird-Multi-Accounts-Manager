@@ -10,12 +10,23 @@ if ("undefined" == typeof(XULAccountsManagerChrome)) {
 /**
  * Controls the browser overlay for the ThunderBirdMultiAccountsManager extension.
  */
-XULAccountsManagerChrome.AddChangeContactDialog = {
+XULAccountsManagerChrome.manageContactDialog = {
 
-loadChangeContact : function()
+addressValid : function(address)
 {
-    document.getElementById("nickname").setAttribute("value",window.arguments[1]);
-    document.getElementById("email").setAttribute("value",window.arguments[2]);
+  // crude check that the to, cc, and bcc fields contain at least one '@'.
+  // We could parse each address, but that might be overkill.
+  if (address.length > 0 && (address.indexOf("@") <= 0 && address.toLowerCase() != "postmaster"
+      || address.indexOf("@") == address.length - 1 || address.length == 0))
+   {
+      let stringBundle = document.getElementById("manageContact-string-bundle");
+      let title = stringBundle.getString("ThunderBirdMultiAccountsManager.addContact.warn.title");
+      let text = stringBundle.getFormattedString("ThunderBirdMultiAccountsManager.addContact.warn.addressInvalid",[address]);
+      let prompts = Cc["@mozilla.org/embedcomp/prompt-service;1"].getService(Ci.nsIPromptService);
+      prompts.alert(window, title,text);
+      return false;
+   }
+    return true; 
 },
 addContact : function()
 {
@@ -23,26 +34,16 @@ addContact : function()
   let name_contact = document.getElementById("nickname").value;
   let address_contact = document.getElementById("email").value;
   
-   // crude check that the to, cc, and bcc fields contain at least one '@'.
-   // We could parse each address, but that might be overkill.
-   if (address_contact.length > 0 && (address_contact.indexOf("@") <= 0 && address_contact.toLowerCase() != "postmaster"
-      || address_contact.indexOf("@") == address_contact.length - 1))
-   {
-     /* let stringBundle = document.getElementById("addContact-string-bundle");
-      let title = stringBundle.getFormattedString("ThunderBirdMultiAccountsManager.addContact.warn.title");
-      let text = stringBundle.getFormattedString("ThunderBirdMultiAccountsManager.addContact.warn.addressInvalid");
-      let prompts = Cc["@mozilla.org/embedcomp/prompt-service;1"].getService(Ci.nsIPromptService);
-       prompts.alert(window, title,text);*/
-   }
-  else
+  if(this.addressValid(address_contact))
   {
-    if(name_contact.length != 0  && address_contact.length != 0)
-    {
-      XULUtils.DB.insertContact(name_contact, address_contact, id_account);
-    }
+    XULUtils.DB.insertContact(name_contact,address_contact,id_account);
   }
   this.cancel();
-  
+},
+loadChangeContact : function()
+{
+    document.getElementById("nickname").setAttribute("value",window.arguments[1]);
+    document.getElementById("email").setAttribute("value",window.arguments[2]);
 },
 changeContact : function()
 {
@@ -50,26 +51,11 @@ changeContact : function()
   let name_contact = document.getElementById("nickname").value;
   let address_contact = document.getElementById("email").value;
 
-   // crude check that the to, cc, and bcc fields contain at least one '@'.
-   // We could parse each address, but that might be overkill.
-   if (address_contact.length > 0 && (address_contact.indexOf("@") <= 0 && address_contact.toLowerCase() != "postmaster"
-      || address_contact.indexOf("@") == address_contact.length - 1))
-   {
-     /* let stringBundle = document.getElementById("addContact-string-bundle");
-      let title = stringBundle.getFormattedString("ThunderBirdMultiAccountsManager.addContact.warn.title");
-      let text = stringBundle.getFormattedString("ThunderBirdMultiAccountsManager.addContact.warn.addressInvalid");
-      let prompts = Cc["@mozilla.org/embedcomp/prompt-service;1"].getService(Ci.nsIPromptService);
-       prompts.alert(window, title,text);*/
-   }
-  else
+  if(this.addressValid(address_contact))
   {
-    if(name_contact.length != 0  && address_contact.length != 0)
-    {
-      XULUtils.DB.updateContact(id_contact,name_contact,address_contact);
-    }
+    XULUtils.DB.updateContact(id_contact,name_contact,address_contact);
   }
   this.cancel();
-  
 },
 cancel : function()
 {

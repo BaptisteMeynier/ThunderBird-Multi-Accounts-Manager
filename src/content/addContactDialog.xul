@@ -10,8 +10,8 @@
 
 
 <dialog id="ThunderBirdMultiAccountsManager-addContactDialog" buttons="accept,cancel"
-  ondialogaccept="XULAccountsManagerChrome.AddChangeContactDialog.addContact()"
-  ondialogcancel="XULAccountsManagerChrome.AddChangeContactDialog.cancel()"
+  ondialogaccept="XULAccountsManagerChrome.manageContactDialog.addContact()"
+  ondialogcancel="XULAccountsManagerChrome.manageContactDialog.cancel()"
   title="&ThunderBirdMultiAccountsManager.manager.adding.title;"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" >
 
@@ -25,10 +25,10 @@
   <script type="application/x-javascript"
     src="chrome://ThunderBirdMultiAccountsManager/content/addChangeContactDialog.js" />
   
-  <!--stringbundleset id="stringbundleset">
-    <stringbundle id="addContact-string-bundle"
+  <stringbundleset id="stringbundleset">
+    <stringbundle id="manageContact-string-bundle"
       src="chrome://ThunderBirdMultiAccountsManager/locale/ThunderBirdMultiAccountsManager.properties" />
-  </stringbundleset-->
+  </stringbundleset>
   
   <groupbox>
     <label value="&ThunderBirdMultiAccountsManager.manager.NickName;"/>
