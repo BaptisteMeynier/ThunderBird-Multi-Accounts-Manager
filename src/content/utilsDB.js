@@ -19,7 +19,7 @@ Cu.import("resource://gre/modules/FileUtils.jsm");
 */
 XULUtils.DB = {
 
-  dBName : "TBMAM.sqlite",
+  dBName : "ThunderBirdMultiAccountsManager.sqlite",
   
   directory : "ProfD",
   
@@ -90,13 +90,15 @@ XULUtils.DB = {
     
     statement.executeAsync({  
       handleResult: function(aResultSet) {  
-        for (let row = aResultSet.getNextRow(); row; row = aResultSet.getNextRow())
+        /*for (let row = aResultSet.getNextRow(); row; row = aResultSet.getNextRow())
         {
           let value1 = row.getResultByName("id_account");
           let value2 = row.getResultByName("name_account");
           let value3 = row.getResultByName("address_account");
           alert("getAccounts : " + value1 + ", " + value2 + ", " + value3);
-        }  
+        } */
+        
+        
       },  
   
       handleError: function(aError) {  
@@ -108,98 +110,6 @@ XULUtils.DB = {
         print("Query canceled or aborted!");  
       }  
     });
-  },
-  
-  getAccountId : function (name_account, address_account)
-  {
-    let file = FileUtils.getFile(this.directory, [this.dBName]);
-    let mDBConn = Services.storage.openDatabase(file);
-    
-    let statement = mDBConn.createStatement(
-        "SELECT id_account FROM account WHERE name_account = :name_account AND address_account = :address_account");  
-    statement.params.name_account = name_account;
-    statement.params.address_account = address_account;
-    
-    statement.executeAsync({
-      handleResult: function(aResultSet) {
-        let value = "";
-        for (let row = aResultSet.getNextRow(); row; row = aResultSet.getNextRow())
-        {
-          value = row.getResultByName("id_account");
-        }
-        alert("getAccountId : " + value);
-      },  
-  
-      handleError: function(aError) {  
-        print("Error: " + aError.message);  
-      },  
-  
-      handleCompletion: function(aReason) {  
-        if (aReason != Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED)  
-        print("Query canceled or aborted!");  
-      }  
-    });
-  },
-  
-  getContactId : function (name_contact, address_contact)
-  {
-    let file = FileUtils.getFile(this.directory, [this.dBName]);
-    let mDBConn = Services.storage.openDatabase(file);
-
-    let statement = mDBConn.createStatement(
-        "SELECT id_contact FROM contact WHERE name_contact = :name_contact AND address_contact = :address_contact");  
-    statement.params.name_contact = name_contact;
-    statement.params.address_contact = address_contact;
-    
-    statement.executeAsync({
-      handleResult: function(aResultSet) {
-        let value = "";
-        for (let row = aResultSet.getNextRow(); row; row = aResultSet.getNextRow())
-        {
-          value = row.getResultByName("id_account");
-        }
-        alert("getContactId : " + value)
-      },  
-  
-      handleError: function(aError) {  
-        print("Error: " + aError.message);  
-      },  
-  
-      handleCompletion: function(aReason) {  
-        if (aReason != Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED)  
-        print("Query canceled or aborted!");  
-      }  
-    }); 
-  },
-  
-  getContactsFromAccount : function (id_account)
-  {
-    let file = FileUtils.getFile(this.directory, [this.dBName]);
-    let mDBConn = Services.storage.openDatabase(file);
-    
-    let statement = mDBConn.createStatement("SELECT * FROM contact WHERE link_account = :id_account");  
-    statement.params.id_account = id_account;
-    
-    statement.executeAsync({  
-      handleResult: function(aResultSet) {  
-        for (let row = aResultSet.getNextRow(); row; row = aResultSet.getNextRow())
-        {  
-          let value1 = row.getResultByName("name_contact");
-          let value2 = row.getResultByName("address_contact");
-          let value3 = row.getResultByName("link_account");
-          alert("getContactsFromAccount : " + value1 + ", " + value2 + ", " + value3 );
-        }
-      },  
-  
-      handleError: function(aError) {  
-        print("Error: " + aError.message);  
-      },  
-  
-      handleCompletion: function(aReason) {  
-        if (aReason != Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED)  
-        print("Query canceled or aborted!");  
-      }  
-    }); 
   },
   
   contactFound: function (name_contact, address_contact)
@@ -228,7 +138,6 @@ XULUtils.DB = {
     }); 
   },
   
-
   contactFoundForAccount: function (name_contact, address_contact, id_account)
   {
     let file = FileUtils.getFile(this.directory, [this.dBName]);
@@ -289,7 +198,7 @@ XULUtils.DB = {
     
     mDBConn.executeSimpleSQL(
         "UPDATE contact SET name_contact = '" + name_contact + "', address_contact = '" + address_contact  + "' " +
-        "WHERE link_account = " + id_contact
+        "WHERE id_contact = " + id_contact
         );
 
     mDBConn.close();

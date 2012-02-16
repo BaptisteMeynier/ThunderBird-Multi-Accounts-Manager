@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet type="text/css" href="chrome://global/skin/" ?>
+<?xml-stylesheet type="text/css"
+  href="chrome://mozapps/content/preferences/preferences.css" ?>
+
+
+<!DOCTYPE overlay SYSTEM
+  "chrome://ThunderBirdMultiAccountsManager/locale/ThunderBirdMultiAccountsManager.dtd">
+
+
+<dialog id="ThunderBirdMultiAccountsManager-addContactDialog" buttons="accept,cancel"
+  ondialogaccept="XULAccountsManagerChrome.AddChangeContactDialog.changeContact()"
+  ondialogcancel="XULAccountsManagerChrome.AddChangeContactDialog.cancel()"
+  title="&ThunderBirdMultiAccountsManager.manager.adding.title;"
+  onload="XULAccountsManagerChrome.AddChangeContactDialog.loadChangeContact()"
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" >
+
+
+  <script type="application/x-javascript"
+    src="chrome://ThunderBirdMultiAccountsManager/content/utilsDB.js" />
+
+  <script type="application/x-javascript"
+    src="chrome://ThunderBirdMultiAccountsManager/content/managerDialog.js" />
+
+  <script type="application/x-javascript"
+    src="chrome://ThunderBirdMultiAccountsManager/content/addChangeContactDialog.js" />
+
+  <!--groupbox id="contactInfos" datasources="profile:ThunderBirdMultiAccountsManager.sqlite" ref="*" querytype="storage">
+    <template>  
+        <query>  
+          SELECT name_contact, address_contact FROM contact WHERE link_account = :id_account 
+          <param id="id_account" name="id_account" type="integer">1</param>  
+        </query>
+        <action>
+          <label value="&ThunderBirdMultiAccountsManager.manager.NickName;"/>
+          <textbox uri="?" id="nickname" value="?name_contact"/>  
+          <label value="&ThunderBirdMultiAccountsManager.manager.Email;"/>
+          <textbox uri="?" id="email" value="?address_contact"/>
+        </action>
+    </template>
+  </groupbox-->
+  <groupbox id="contactInfos">
+    <label value="&ThunderBirdMultiAccountsManager.manager.NickName;"/>
+    <textbox id="nickname" value=""/>  
+    <label value="&ThunderBirdMultiAccountsManager.manager.Email;"/>
+    <textbox id="email" value=""/>
+  </groupbox>
+  
+</dialog>

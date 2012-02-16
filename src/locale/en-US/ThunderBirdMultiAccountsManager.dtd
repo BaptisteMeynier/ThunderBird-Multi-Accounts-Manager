@@ -20,16 +20,8 @@
 <!ENTITY ThunderBirdMultiAccountsManager.manager.list.header "Accounts">
 
 
-<!ENTITY ThunderBirdMultiAccountsManager.manager.GeneratedName "Generated Name">
-<!ENTITY ThunderBirdMultiAccountsManager.manager.PrimaryEmail "Primary Email">
-<!ENTITY ThunderBirdMultiAccountsManager.manager.Pseudo "Pseudo">
-<!ENTITY ThunderBirdMultiAccountsManager.manager.Company "Company">
 <!ENTITY ThunderBirdMultiAccountsManager.manager.NickName "Nick Name">
-<!ENTITY ThunderBirdMultiAccountsManager.manager.SecondEmail "Second Email">
-<!ENTITY ThunderBirdMultiAccountsManager.manager.Department "Department">
-<!ENTITY ThunderBirdMultiAccountsManager.manager.JobTitle "Job Title">
-<!ENTITY ThunderBirdMultiAccountsManager.manager.CellularNumber "Cellular Number">
-<!ENTITY ThunderBirdMultiAccountsManager.manager.PagerNumber "Pager Number">
-<!ENTITY ThunderBirdMultiAccountsManager.manager.FaxNumber "Fax Number">
-<!ENTITY ThunderBirdMultiAccountsManager.manager.HomePhone "Home Phone">
-<!ENTITY ThunderBirdMultiAccountsManager.manager.WorkPhone "Work Phone">
+<!ENTITY ThunderBirdMultiAccountsManager.manager.Email "Email">
+
+
+<!ENTITY ThunderBirdMultiAccountsManager.manager.adding.title "Adding">

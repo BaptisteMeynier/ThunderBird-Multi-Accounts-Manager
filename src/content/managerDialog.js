@@ -27,30 +27,50 @@ if ("undefined" == typeof(XULAccountsManagerChrome)) {
 /**
  * Controls the browser overlay for the ThunderBirdMultiAccountsManager extension.
  */
-XULAccountsManagerChrome.BrowserOverlay = {
+XULAccountsManagerChrome.ManagerDialog = {
 
-  openManager : function(aEvent)
+
+  openManager : function()
   {
-    XULUtils.DB.main();
-    window.open(
-      "chrome://ThunderBirdMultiAccountsManager/content/managerDialog.xul",
-      "MultiAccountsManager", "chrome,centerscreen");
+    window.openDialog(
+        "chrome://ThunderBirdMultiAccountsManager/content/managerDialog.xul",
+        "MultiAccountsManager", 'chrome,centerscreen');
   },
-  loadAccounts : function()
+  loadContacts : function(id_account)
   {
-   
+    document.getElementById("id_account").textContent = id_account;  
+    document.getElementById("contactsList").builder.rebuild(); 
   },
-  loadAddress : function()
+  addContact : function ()
   {
-    
+    let row = document.getElementById("accountsList").selectedIndex + 1;
+    let res = document.getElementById("accountsList").getElementsByTagName("listitem").item(row).getAttribute("name");
+    if (row > 0)
+    {
+    window.openDialog(
+        "chrome://ThunderBirdMultiAccountsManager/content/addContactDialog.xul",
+        "addContact", 'chrome,centerscreen',res);
+    window.close();
+    }
   },
-  addAddress : function ()
+  
+  changeContact : function()
   {
-    
-  },
-  changeAddress : function()
-  {
-    
+
+    let tree = document.getElementById("ThunderBirdMultiAccountsManager-manager-abResultsTree");
+    let name_contact = tree.view.getCellText(tree.currentIndex, tree.columns.getColumnAt(0));
+    let address_contact = tree.view.getCellText(tree.currentIndex, tree.columns.getColumnAt(1));
+    let view = document.getElementById("ThunderBirdMultiAccountsManager-manager-abResultsTree").view;
+    let row = view.selection.currentIndex; //returns -1 if the tree is not focused
+    let id_contact = view.getItemAtIndex(row).getAttribute("name");
+
+    if (row > 0)
+    {
+    window.openDialog(
+        "chrome://ThunderBirdMultiAccountsManager/content/changeContactDialog.xul",
+        "changeContact", 'chrome,centerscreen',id_contact, name_contact, address_contact);
+    window.close();
+    }
   },
   deleteAddress : function()
   {

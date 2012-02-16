@@ -1,3 +1,20 @@
+//   chrome://messenger/content/addressbook/abTrees.js
+
+// chrome://messenger/content/accountUtils.js (vérification des adresses)
+
+// chrome://messenger/content/mailCore.js voir methode function toAddressBook()
+
+// chrome://messenger/content/addressbook/addressbook.js
+
+// chrome://messenger/content/addressbook/abCommon.js barre de menu
+
+// chrome://messenger/content/addressbook/abDragDrop.js
+
+// chrome://messenger/content/addressbook/abResultsPane.js
+
+//chrome://messenger/content/addressbook/abCardViewOverlay.js carte des contacts
+
+
 /**
  * XULAccountsManagerChrome namespace.
  */
@@ -5,20 +22,20 @@ if ("undefined" == typeof(XULAccountsManagerChrome)) {
   var XULAccountsManagerChrome = {};
 };
 
+
+
 /**
  * Controls the browser overlay for the ThunderBirdMultiAccountsManager extension.
  */
 XULAccountsManagerChrome.BrowserOverlay = {
 
-  loadAccounts : function()
-  {
-   
-  },
-  
   openManager : function(aEvent)
   {
-    window.open(
-      "chrome://ThunderBirdMultiAccountsManager/content/managerDialog.xul",
-      "", "chrome,centerscreen");
+    XULUtils.DB.main();
+    
+    window.openDialog(
+        "chrome://ThunderBirdMultiAccountsManager/content/managerDialog.xul",
+        "MultiAccountsManager", 'chrome,centerscreen');
   }
+
 };

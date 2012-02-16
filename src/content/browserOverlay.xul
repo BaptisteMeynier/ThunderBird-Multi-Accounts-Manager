@@ -10,8 +10,8 @@
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <script type="application/x-javascript"
-    src="chrome://ThunderBirdMultiAccountsManager/content/managerDialog.js" />
-  
+    src="chrome://ThunderBirdMultiAccountsManager/content/browserOverlay.js" />
+
   <script type="application/x-javascript"
     src="chrome://ThunderBirdMultiAccountsManager/content/utilsDB.js" />
 
