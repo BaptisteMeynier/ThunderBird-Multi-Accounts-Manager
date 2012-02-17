@@ -22,19 +22,25 @@ os_type := $(patsubst darwin%,darwin,$(shell echo $(OSTYPE)))
 # The location of the extension profile.
 ifeq ($(os_type), darwin)
   profile_location := \
-    ~/Library/Application\ Support/Firefox/Profiles/$(profile_dir)/extensions/\{$(extension_uuid)\}
+    ~/Library/Application\ Support/Firefox/Profiles/$(profile_dir)/extensions/$(extension_uuid)
 else
   ifeq ($(os_type), linux-gnu)
     profile_location := \
-      ~/.mozilla/firefox/$(profile_dir)/extensions/\{$(extension_uuid)\}
+      ~/.mozilla/firefox/$(profile_dir)/extensions/$(extension_uuid)
   else
     profile_location := \
-      "$(subst \,\\,$(APPDATA))\\Mozilla\\Firefox\\Profiles\\$(profile_dir)\\extensions\\{$(extension_uuid)}"
+      "$(subst \,\\,$(APPDATA))\\Mozilla\\Firefox\\Profiles\\$(profile_dir)\\extensions\\$(extension_uuid)"
   endif
 endif
 
 # The temporary location where the extension tree will be copied and built.
 build_dir := $(bin_dir)/build
+
+# The install.rdf file.
+install_rdf := install.rdf
+
+# The chrome.manifest file.
+chrome_manifest := chrome.manifest
 
 # This builds the extension XPI file.
 .PHONY: all
@@ -50,17 +56,18 @@ clean:
 	@rm -f $(xpi_file)
 	@echo "Cleanup is done."
 
-# The sources for the XPI file.
-xpi_built := install.rdf \
-             chrome.manifest \
-             $(wildcard content/*.js) \
-             $(wildcard content/*.xul) \
-             $(wildcard content/*.xml) \
-             $(wildcard content/*.css) \
-             $(wildcard skin/*.css) \
-             $(wildcard skin/*.png) \
-             $(wildcard locale/*/*.dtd) \
-             $(wildcard locale/*/*.properties)
+# The includes are added after the targets because we want this file to contain
+# the default (first) target.
+include chrome/Makefile.in
+
+# The sources for the XPI file. Uses variables defined in the included
+# Makefiles.
+xpi_built := $(build_dir)/$(install_rdf) \
+             $(build_dir)/$(chrome_manifest) \
+             $(chrome_jar_file) \
+             $(addprefix $(build_dir)/,$(modules_sources)) \
+
+xpi_built_no_dir := $(subst $(build_dir)/,,$(xpi_built))
 
 # This builds everything except for the actual XPI, and then it copies it to the
 # specified profile directory, allowing a quick update that requires no install.
@@ -71,8 +78,17 @@ install: $(build_dir) $(xpi_built)
 	@echo "Installing in profile folder. Done!"
 	@echo
 
-
-$(xpi_file): $(xpi_built)
+$(xpi_file): $(build_dir) $(xpi_built)
 	@echo "Creating XPI file."
-	@$(ZIP) $(xpi_file) $(xpi_built)
+	@cd $(build_dir); $(ZIP) ../$(xpi_file) $(xpi_built_no_dir)
 	@echo "Creating XPI file. Done!"
+
+$(build_dir)/%: %
+	@cp -f $< $@
+
+$(build_dir):
+	@if [ ! -x $(build_dir) ]; \
+  then \
+    mkdir $(build_dir); \
+  fi
+
