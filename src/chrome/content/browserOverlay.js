@@ -1,7 +1,4 @@
 
-//Components.utils.import("resource://ThunderBirdMultiAccountsManager/common.js");
-//Components.utils.import("resource://ThunderBirdMultiAccountsManager/dbInit.js");
-
 /**
  * XULAccountsManagerChrome namespace.
  */
@@ -18,7 +15,12 @@ XULAccountsManagerChrome.BrowserOverlay = {
 
   openManager : function(aEvent)
   {
-    XULUtils.DB.main();
+
+    if(!XULUtils.DB.filExist())
+    {
+      XULUtils.DB.initDB();
+    }
+
     window.openDialog(
         "chrome://ThunderBirdMultiAccountsManager/content/managerDialog.xul",
         "MultiAccountsManager", 'chrome,centerscreen');

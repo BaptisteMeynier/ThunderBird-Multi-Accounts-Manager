@@ -37,23 +37,22 @@ XULAccountsManagerChrome.ManagerDialog = {
   },
   loadContacts : function(id_account)
   {
-    document.getElementById("id_account").textContent = id_account;  
+    document.getElementById("id_identity").textContent = id_account;  
     document.getElementById("contactsList").builder.rebuild(); 
   },
   addContact : function ()
   {
-    let row_account = document.getElementById("accountsList").selectedIndex;
+    let row_account = document.getElementById("identitiesList").selectedIndex;
     
     if (row_account != -1)
     {
-        let id_account = document.getElementById("accountsList").getElementsByTagName("listitem").item(row_account+1).getAttribute("name");
+        let id_account = document.getElementById("identitiesList").getElementsByTagName("listitem").item(row_account+1).getAttribute("name");
         window.openDialog(
             "chrome://ThunderBirdMultiAccountsManager/content/addContactDialog.xul",
             "addContact", 'chrome,centerscreen',id_account);
         window.close();
     }
   },
-  
   changeContact : function()
   {
     let view = document.getElementById("ThunderBirdMultiAccountsManager-manager-abResultsTree").view;
@@ -79,7 +78,7 @@ XULAccountsManagerChrome.ManagerDialog = {
 
     if (row_contact != -1)
     {
-        let row_account = document.getElementById("accountsList").selectedIndex + 1;
+        let row_account = document.getElementById("identitiesList").selectedIndex + 1;
         let tree = document.getElementById("ThunderBirdMultiAccountsManager-manager-abResultsTree");
         let name_contact = [tree.view.getCellText(tree.currentIndex, tree.columns.getColumnAt(0))];
         let id_contact = view.getItemAtIndex(row_contact).getAttribute("name");
@@ -98,10 +97,10 @@ XULAccountsManagerChrome.ManagerDialog = {
                 row_account = 1;
             }
 
-            let id_account = document.getElementById("accountsList").getElementsByTagName("listitem")
+            let id_account = document.getElementById("identitiesList").getElementsByTagName("listitem")
                 .item(row_account).getAttribute("name");
             
-            document.getElementById("id_account").textContent = id_account;  
+            document.getElementById("id_identity").textContent = id_account;  
             document.getElementById("contactsList").builder.rebuild(); 
         }
     }

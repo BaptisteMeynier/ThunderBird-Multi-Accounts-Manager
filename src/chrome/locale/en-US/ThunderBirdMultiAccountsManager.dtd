@@ -17,7 +17,7 @@
 <!ENTITY ThunderBirdMultiAccountsManager.manager.toolbar.delete "Delete Contact">
 <!ENTITY ThunderBirdMultiAccountsManager.manager.toolbar.smartscan "Smart Scan">
 
-<!ENTITY ThunderBirdMultiAccountsManager.manager.list.header "Accounts">
+<!ENTITY ThunderBirdMultiAccountsManager.manager.list.header "Identities">
 
 
 <!ENTITY ThunderBirdMultiAccountsManager.manager.NickName "Nick Name">

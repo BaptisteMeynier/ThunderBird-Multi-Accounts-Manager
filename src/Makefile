@@ -42,6 +42,9 @@ install_rdf := install.rdf
 # The chrome.manifest file.
 chrome_manifest := chrome.manifest
 
+# The preferences dir.
+preferences_dir := $(defaults_dir)/preferences
+
 # This builds the extension XPI file.
 .PHONY: all
 all: $(xpi_file)
@@ -65,7 +68,6 @@ include chrome/Makefile.in
 xpi_built := $(build_dir)/$(install_rdf) \
              $(build_dir)/$(chrome_manifest) \
              $(chrome_jar_file) \
-             $(addprefix $(build_dir)/,$(modules_sources)) \
 
 xpi_built_no_dir := $(subst $(build_dir)/,,$(xpi_built))
 

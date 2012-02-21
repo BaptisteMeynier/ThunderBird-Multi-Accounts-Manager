@@ -22,26 +22,29 @@ XULUtils.DB = {
   _dBName : "ThunderBirdMultiAccountsManager.sqlite",
   
   _directory : "ProfD",
-  
-  _nbAccounts : 0,
-  
-  main : function()
+
+
+  filExist : function ()
   {
-    this.initDB();
-    this.loadAccount();    
+        return FileUtils.getFile(this._directory, [this._dBName]).exists();
+  },
+  initDB : function()
+  {
+    this.createDB();
+    this.loadIdentities();    
   },
   
-  initDB : function()
+  createDB : function()
   {
     let file = FileUtils.getFile(this._directory, [this._dBName]);
     let mDBConn = Services.storage.openDatabase(file);
     
     mDBConn.executeSimpleSQL(
-        "CREATE TABLE IF NOT EXISTS account"+
+        "CREATE TABLE IF NOT EXISTS identity"+
         "(" +
-            "id_account INTEGER PRIMARY KEY, " +
-            "name_account TEXT, " +
-            "address_account TEXT"+
+            "id_identity INTEGER PRIMARY KEY, " +
+            "name_identity TEXT, " +
+            "address_identity TEXT"+
         ")");
 
     mDBConn.executeSimpleSQL(
@@ -50,47 +53,24 @@ XULUtils.DB = {
             "id_contact INTEGER PRIMARY KEY, " +
             "name_contact TEXT, " +
             "address_contact TEXT, " +
-            "link_account INTEGER, " +
-            "FOREIGN KEY (link_account) REFERENCES account(id_account)" +
+            "link_identity INTEGER, " +
+            "FOREIGN KEY (link_identity) REFERENCES identity(id_identity)" +
         ")");
     
     mDBConn.close();
   },
-  loadAccount: function ()
+  loadIdentities: function ()
   {
-    let file = FileUtils.getFile(this._directory, [this._dBName]);
-    let mDBConn = Services.storage.openDatabase(file);
-    
-    let statement = mDBConn.createStatement(
-        "SELECT count(*) AS total_account FROM account");
-    
-    statement.executeAsync({  
-      handleResult: function(aResultSet) {
-        XULUtils.DB._nbAccounts = aResultSet.getNextRow().getResultByName("total_account");
-        gAccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
-          .getService(Components.interfaces.nsIMsgAccountManager);
-        let identities = gAccountManager.allIdentities;
+    let gAccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
+      .getService(Components.interfaces.nsIMsgAccountManager);
+    let identities = gAccountManager.allIdentities;
         
-        if (XULUtils.DB._nbAccounts != identities.Count())
-        {
-          for (let j = XULUtils.DB._nbAccounts ; j < identities.Count(); j++)
-          {
-            name = identities.QueryElementAt(j, Components.interfaces.nsIMsgIdentity).fullName;
-            email = identities.QueryElementAt(j, Components.interfaces.nsIMsgIdentity).email;
-            XULUtils.DB.insertAccount(name,email);
-          }
-        }
-      },
-      
-      handleError: function(aError) {  
-        print("Error: " + aError.message);  
-      },  
-  
-      handleCompletion: function(aReason) {  
-        if (aReason != Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED)  
-        print("Query canceled or aborted!");  
-      }  
-    }); 
+    for (let j = 0 ; j < identities.Count(); j++)
+    {
+      name = identities.QueryElementAt(j, Components.interfaces.nsIMsgIdentity).fullName;
+      email = identities.QueryElementAt(j, Components.interfaces.nsIMsgIdentity).email;
+      XULUtils.DB.insertIdentity(name,email);
+    }
   },
   contactFound: function (name_contact, address_contact)
   {
@@ -98,13 +78,13 @@ XULUtils.DB = {
     let mDBConn = Services.storage.openDatabase(file);
     
     let statement = mDBConn.createStatement(
-        "SELECT count(*) AS total FROM contact WHERE name_contact = :name_contact AND address_contact = :address_contact");
+        "SELECT count(*) AS total_contact FROM contact WHERE name_contact = :name_contact AND address_contact = :address_contact");
     statement.params.name_contact = name_contact;
     statement.params.address_contact = address_contact;
     
     statement.executeAsync({  
       handleResult: function(aResultSet) {
-        alert("contactFound : " + (aResultSet.getNextRow().getResultByName("total")!=0)); 
+        alert("contactFound : " + (aResultSet.getNextRow().getResultByName("total_contact")!=0)); 
       },
       
       handleError: function(aError) {  
@@ -118,22 +98,22 @@ XULUtils.DB = {
     }); 
   },
   
-  contactFoundForAccount: function (name_contact, address_contact, id_account)
+  contactFoundForIdentity: function (name_contact, address_contact, id_identity)
   {
     let file = FileUtils.getFile(this._directory, [this._dBName]);
     let mDBConn = Services.storage.openDatabase(file);
     
     let statement = mDBConn.createStatement(
-        "SELECT count(*) AS total FROM contact WHERE link_account = :id_account AND " +
+        "SELECT count(*) AS total_contact FROM contact WHERE link_identity = :id_identity AND " +
         "name_contact = :name_contact AND address_contact = :address_contact"
         );
     statement.params.name_contact = name_contact;
     statement.params.address_contact = address_contact;
-    statement.params.id_account = id_account;
+    statement.params.id_identity = id_identity;
     
     statement.executeAsync({  
       handleResult: function(aResultSet) {
-        alert("contactFoundForAccount : " + (aResultSet.getNextRow().getResultByName("total")!=0)); 
+        alert("contactFoundForIdentity : " + (aResultSet.getNextRow().getResultByName("total_identity")!=0)); 
       },  
   
       handleError: function(aError) {  
@@ -147,29 +127,41 @@ XULUtils.DB = {
     }); 
   },
   
-  insertAccount: function(name_account, address_account)
+  insertIdentity: function(name_identity, address_identity)
   {
     let file = FileUtils.getFile(this._directory, [this._dBName]);
     let mDBConn = Services.storage.openDatabase(file);
     
     mDBConn.executeSimpleSQL(
-        "INSERT INTO account (name_account, address_account) VALUES " +
-        "('" + name_account + "','" + address_account + "')"
+        "INSERT INTO identity (name_identity, address_identity) VALUES " +
+        "('" + name_identity + "','" + address_identity + "')"
         );
 
     mDBConn.close();
   },
   
-  insertContact: function(name_contact, address_contact, id_account)
+  insertContact: function(name_contact, address_contact, id_identity)
   {
     let file = FileUtils.getFile(this._directory, [this._dBName]);
     let mDBConn = Services.storage.openDatabase(file);
     
     mDBConn.executeSimpleSQL(
-        "INSERT INTO contact (name_contact, address_contact, link_account) VALUES "+
-        "('" + name_contact + "','"  + address_contact + "'," + id_account + ")");
+        "INSERT INTO contact (name_contact, address_contact, link_identity) VALUES "+
+        "('" + name_contact + "','"  + address_contact + "'," + id_identity + ")");
     mDBConn.close();
     },
+  updateIdentity: function(id_identity, name_identity, address_identity)
+  {
+    let file = FileUtils.getFile(this._directory, [this._dBName]);
+    let mDBConn = Services.storage.openDatabase(file);
+    
+    mDBConn.executeSimpleSQL(
+        "UPDATE identity SET name_identity = '" + name_identity + "', address_identity = '" + address_identity  + "' " +
+        "WHERE id_identity = " + id_identity
+        );
+
+    mDBConn.close();
+  },
     
   updateContact: function(id_contact, name_contact, address_contact)
   {
@@ -184,13 +176,13 @@ XULUtils.DB = {
     mDBConn.close();
   },
   
-  deleteAccount:function(id_account)
+  deleteIdentity:function(id_identity)
   {
     let file = FileUtils.getFile(this._directory, [this._dBName]);
     let mDBConn = Services.storage.openDatabase(file);
     
-    mDBConn.executeSimpleSQL("DELETE FROM contact WHERE link_account = " + id_account);
-    mDBConn.executeSimpleSQL("DELETE FROM account WHERE id_account = " + id_account);
+    mDBConn.executeSimpleSQL("DELETE FROM contact WHERE link_identity = " + id_identity);
+    mDBConn.executeSimpleSQL("DELETE FROM identity WHERE id_identity = " + id_identity);
     mDBConn.close();
   },
   

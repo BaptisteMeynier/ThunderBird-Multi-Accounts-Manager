@@ -41,17 +41,17 @@
   
     <hbox>
       
-    <listbox id="accountsList" datasources="profile:ThunderBirdMultiAccountsManager.sqlite" ref="*" querytype="storage">
+    <listbox id="identitiesList" datasources="profile:ThunderBirdMultiAccountsManager.sqlite" ref="*" querytype="storage">
       <listhead>
         <listheader label="&ThunderBirdMultiAccountsManager.manager.list.header;"/>
       </listhead>
 
       <template>  
         <query>  
-          SELECT * FROM account
+          SELECT * FROM identity
         </query>  
         <action>
-          <listitem uri="?" name="?id_account"  label="?name_account" onclick="XULAccountsManagerChrome.ManagerDialog.loadContacts(this.getAttribute('name'))"/>
+          <listitem uri="?" name="?id_identity"  label="?name_identity" onclick="XULAccountsManagerChrome.ManagerDialog.loadContacts(this.getAttribute('name'))"/>
         </action>
       </template>
     </listbox>
@@ -71,8 +71,8 @@
       <treechildren id="contactsList" datasources="profile:ThunderBirdMultiAccountsManager.sqlite" ref="*" querytype="storage">
         <template>
           <query>
-            SELECT * FROM contact WHERE link_account = :id_account
-            <param id="id_account" name="id_account" type="integer">1</param>  
+            SELECT * FROM contact WHERE link_identity = :id_identity
+            <param id="id_identity" name="id_identity" type="integer">1</param>  
           </query>
           <action>
             <treeitem uri="?" name="?id_contact">
