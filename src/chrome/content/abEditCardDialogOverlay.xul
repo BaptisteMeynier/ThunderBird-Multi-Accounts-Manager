@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet type="text/css" href="chrome://global/skin/" ?>
+
+
+<!DOCTYPE overlay SYSTEM
+  "chrome://IdentityManager/locale/IdentityManager.dtd">
+
+<overlay id="ThunderBirdMultiAccountsManager-admin-overlay"
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <script type="application/x-javascript"
+    src="chrome://IdentityManager/content/abNewCardDialogOverlay.js" />
+
+  <script type="application/x-javascript"
+    src="chrome://IdentityManager/content/abEditCardDialogOverlay.js" />
+
+  <stringbundleset id="stringbundleset">
+    <stringbundle id="browser-string-bundle"
+      src="chrome://IdentityManager/locale/IdentityManager.properties" />
+  </stringbundleset>
+  
+    <vbox id="PhoneNumbers">
+    <hbox id="IdentityLinkContainer" align="center">
+      <spacer flex="1"/>
+      <label control="IdentityLink" value="&IdentityManager.addressBook.propertyIdentityLink;"/>
+       <menulist id="IdentityLink" class="PhoneEditWidth" >
+        <menupopup id="msgIdentityPopup" />
+      </menulist>
+    </hbox>
+  </vbox>
+
+</overlay>
