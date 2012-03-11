@@ -1,15 +1,13 @@
 
 // Item is |[dialogField, cardProperty]|.
 kVcardFields.push( ["IdentityLink", "IdentityLink"]);
-   
 
-function LoadIdentity()
+
+function LoadMenuList()
 {
         let gAccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"].getService(Components.interfaces.nsIMsgAccountManager);
     
         let identityElement = document.getElementById("msgIdentityPopup");
-        
-        
         
         for(let i =0;i<gAccountManager.allIdentities.Count();i++)
         {
@@ -17,20 +15,17 @@ function LoadIdentity()
             let identityName = identity.identityName;
             let fullName = identity.fullName;
             let email = identity.email;
-    
-    
+            let idIdentity = identity.key;
+
            let menuItem = document.createElement("menuitem");
            menuItem.setAttribute("label",email);
-           menuItem.setAttribute("value",email);
-           menuItem.setAttribute("description",fullName);
+           menuItem.setAttribute("value",idIdentity);
     
            identityElement.appendChild(menuItem);
         }
 }
 
 
-
 window.addEventListener("load", function load(event){  
-    LoadIdentity();    
+    LoadMenuList();
 },false);  
-  

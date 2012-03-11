@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+
+  <Description about="urn:mozilla:install-manifest">
+    <em:id>projetIndus@IdentityManager2.com</em:id>
+    <em:name>Identity Manager2</em:name>
+    <em:description>Extend Thunderbird to help a user with multiple identities, to detect if he uses the wrong account to send a mail to a correspondent.!</em:description>
+    <em:version>0.1</em:version>
+    <em:creator>Baptiste Meynier</em:creator>
+    <em:creator>Johan Jans</em:creator>
+    <em:creator>Maxime Denoyer</em:creator>
+    <em:creator>Mustapha Oucheikh</em:creator>
+    <em:homepageURL>http://baptistemeynier.github.com/ThunderBird_Multi_Accounts_Manager/</em:homepageURL>
+    <em:type>2</em:type>
+
+    <!-- Mozilla ThunderBird-->
+    <em:targetApplication>
+      <Description>
+        <em:id>{3550f703-e582-4d05-9a08-453d09bdfdc6}</em:id>
+        <em:minVersion>3.0</em:minVersion>
+        <em:maxVersion>10.*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+  </Description>
+</RDF>

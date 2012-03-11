@@ -1,211 +1,44 @@
 
 
+  var zIdentityLink;
 
+// see chrome://messenger/content/addressbook/abCardViewOverlay.js
+var OriginalOnLoadCardView = OnLoadCardView;
 
-
-
-//////////////////////////////////////////
-var zIdentityLink;
-
-function OnLoadCardView()
+var OnLoadCardView = function()
 {
-  
+  //alert("ok");
+  OriginalOnLoadCardView.apply();
 
-  
-  /*
-  var searchQuery = "(or(PrimaryEmail,bw,@V)(NickName,bw,@V)(and(IsMailList,=,TRUE)(Notes,bw,@V)))";  
-searchQuery = searchQuery.replace(/@V/g, encodeURIComponent("mystr"));
-                                  
-                                  
-  let abManager = Components.classes["@mozilla.org/abmanager;1"]  
-                          .getService(Components.interfaces.nsIAbManager);  
-let allAddressBooks = abManager.directories;  
-  
-while (allAddressBooks.hasMoreElements()) {  
-  
-  let ab = allAddressBooks.getNext();  
-  if (ab instanceof Components.interfaces.nsIAbDirectory &&  
-      !ab.isRemote) {  
-    let searchResult = abManager.getDirectory(ab.URI + "?" + searchQuery).childCards;
-    while(searchResult.hasMoreElements()){
-      let as = searchResult.getNext();
-      let mail =  searchResult.getProperty
-    }
-  
-    // ... use searchResult as required.  
-  }  
-} 
-  */
-  
   let stringBundle = document.getElementById("identitymanager-string-bundle");
-  
   zIdentityLink = stringBundle.getString("IdentityManager.addressBook.propertyIdentityLink");
-  zPrimaryEmail = gAddressBookBundle.getString("propertyPrimaryEmail");
-  
-  zSecondaryEmail = gAddressBookBundle.getString("propertySecondaryEmail");
-  zScreenName = gAddressBookBundle.getString("propertyScreenName");
-  zNickname = gAddressBookBundle.getString("propertyNickname");
-  zDisplayName = gAddressBookBundle.getString("propertyDisplayName");
-  zListName = gAddressBookBundle.getString("propertyListName");
-  zWork = gAddressBookBundle.getString("propertyWork");
-  zHome = gAddressBookBundle.getString("propertyHome");
-  zFax = gAddressBookBundle.getString("propertyFax");
-  zCellular = gAddressBookBundle.getString("propertyCellular");
-  zPager = gAddressBookBundle.getString("propertyPager");
-  zBirthday = gAddressBookBundle.getString("propertyBirthday");
-  zCustom1 = gAddressBookBundle.getString("propertyCustom1");
-  zCustom2 = gAddressBookBundle.getString("propertyCustom2");
-  zCustom3 = gAddressBookBundle.getString("propertyCustom3");
-  zCustom4 = gAddressBookBundle.getString("propertyCustom4");
-
   var doc = document;
-  /* data for address book, prefixes: "cvb" = card view box
-                    "cvh" = crad view header
-                    "cv"  = card view (normal fields) */
-  
-  cvData = new Object;
+  cvData.cvIdentityLink = doc.getElementById("cvIdentityLink");
 
-  // Card View Box
-  cvData.CardViewBox    = doc.getElementById("CardViewInnerBox");
-  // Title
-  cvData.CardTitle    = doc.getElementById("CardTitle");
-  // Name section
-  
- // cvData.cvIdentityLinkBox    = doc.getElementById("cvIdentityLinkBox");
-  cvData.cvIdentityLink    = doc.getElementById("cvIdentityLink");
-  
-  //alert("Identity Link"+cvData.cvIdentityLink);
-  
-  cvData.cvbContact = doc.getElementById("cvbContact");
-  cvData.cvhContact = doc.getElementById("cvhContact");
-  cvData.cvNickname    = doc.getElementById("cvNickname");
-  cvData.cvDisplayName  = doc.getElementById("cvDisplayName");
-  cvData.cvEmail1Box    = doc.getElementById("cvEmail1Box");
-  cvData.cvEmail1      = doc.getElementById("cvEmail1");
-  cvData.cvScreennameBox    = doc.getElementById("cvScreennameBox");
-  cvData.cvScreenname    = doc.getElementById("cvScreenname");
-  cvData.cvBuddyIcon              = doc.getElementById("cvBuddyIcon");
-  cvData.cvListNameBox    = doc.getElementById("cvListNameBox");
-  cvData.cvListName               = doc.getElementById("cvListName");
-  cvData.cvEmail2Box    = doc.getElementById("cvEmail2Box");
-  cvData.cvEmail2      = doc.getElementById("cvEmail2");
-  // Home section
-  cvData.cvbHome      = doc.getElementById("cvbHome");
-  cvData.cvhHome      = doc.getElementById("cvhHome");
-  cvData.cvHomeAddress  = doc.getElementById("cvHomeAddress");
-  cvData.cvHomeAddress2  = doc.getElementById("cvHomeAddress2");
-  cvData.cvHomeCityStZip  = doc.getElementById("cvHomeCityStZip");
-  cvData.cvHomeCountry  = doc.getElementById("cvHomeCountry");
-  cvData.cvbHomeMapItBox  = doc.getElementById("cvbHomeMapItBox");
-  cvData.cvHomeMapIt = doc.getElementById("cvHomeMapIt");
-  cvData.cvHomeWebPageBox = doc.getElementById("cvHomeWebPageBox");
-  cvData.cvHomeWebPage  = doc.getElementById("cvHomeWebPage");
-  // Other section
-  cvData.cvbOther     = doc.getElementById("cvbOther");
-  cvData.cvhOther     = doc.getElementById("cvhOther");
-  cvData.cvBirthday   = doc.getElementById("cvBirthday");
-  cvData.cvCustom1    = doc.getElementById("cvCustom1");
-  cvData.cvCustom2    = doc.getElementById("cvCustom2");
-  cvData.cvCustom3    = doc.getElementById("cvCustom3");
-  cvData.cvCustom4    = doc.getElementById("cvCustom4");
-  cvData.cvNotes      = doc.getElementById("cvNotes");
-  // Description section (mailing lists only)
-  cvData.cvbDescription      = doc.getElementById("cvbDescription");
-  cvData.cvhDescription      = doc.getElementById("cvhDescription");
-  cvData.cvDescription      = doc.getElementById("cvDescription");
-  // Addresses section (mailing lists only)
-  cvData.cvbAddresses      = doc.getElementById("cvbAddresses");
-  cvData.cvhAddresses      = doc.getElementById("cvhAddresses");
-  cvData.cvAddresses      = doc.getElementById("cvAddresses");
-  // Phone section
-  cvData.cvbPhone      = doc.getElementById("cvbPhone");
-  cvData.cvhPhone      = doc.getElementById("cvhPhone");
-  cvData.cvPhWork      = doc.getElementById("cvPhWork");
-  cvData.cvPhHome      = doc.getElementById("cvPhHome");
-  cvData.cvPhFax      = doc.getElementById("cvPhFax");
-  cvData.cvPhCellular    = doc.getElementById("cvPhCellular");
-  cvData.cvPhPager    = doc.getElementById("cvPhPager");
-  // Work section
-  cvData.cvbWork      = doc.getElementById("cvbWork");
-  cvData.cvhWork      = doc.getElementById("cvhWork");
-  cvData.cvJobTitle    = doc.getElementById("cvJobTitle");
-  cvData.cvDepartment    = doc.getElementById("cvDepartment");
-  cvData.cvCompany    = doc.getElementById("cvCompany");
-  cvData.cvWorkAddress  = doc.getElementById("cvWorkAddress");
-  cvData.cvWorkAddress2  = doc.getElementById("cvWorkAddress2");
-  cvData.cvWorkCityStZip  = doc.getElementById("cvWorkCityStZip");
-  cvData.cvWorkCountry  = doc.getElementById("cvWorkCountry");
-  cvData.cvbWorkMapItBox  = doc.getElementById("cvbWorkMapItBox");
-  cvData.cvWorkMapIt = doc.getElementById("cvWorkMapIt");
-  cvData.cvWorkWebPageBox = doc.getElementById("cvWorkWebPageBox");
-  cvData.cvWorkWebPage  = doc.getElementById("cvWorkWebPage");
-  cvData.cvbPhoto = doc.getElementById("cvbPhoto");
-  cvData.cvPhoto  = doc.getElementById("cvPhoto");
-  
-  
-  
-  
-  
-  
-  
-      let abManager = Components.classes["@mozilla.org/abmanager;1"]  
-                          .getService(Components.interfaces.nsIAbManager);  
-  
-let allAddressBooks = abManager.directories;   
-  
-while (allAddressBooks.hasMoreElements()) {  
-  let addressBook = allAddressBooks.getNext()  
-                                   .QueryInterface(Components.interfaces.nsIAbDirectory );  
-  if (addressBook instanceof Components.interfaces.nsIAbDirectory ) { // or nsIAbItem or nsIAbCollection  
-     //alert ("Directory Name:" + addressBook.dirName);
-   // alert("Address Name : "+addressBook.)
-      //alert("111");
-      let card = addressBook.cardForEmailAddress("maxime.denoyer@gmail.com");
-      if(card != null){
-      //alert(card.getProperty("FirstName","Vide"));
-      card.setProperty("IdentityLink", "moi@moi.moi");
-      //alert(card.getProperty("IdentityLink","Vide"));
-      addressBook.modifyCard(card);  
-      }
-  }  
-}
-//moz-abmdbdirectory://history.mab
-      let abManager2 = Components.classes["@mozilla.org/abmanager;1"]  
-                          .getService(Components.interfaces.nsIAbManager);  
-  
-let allAddressBooks2 = abManager2.directories;   
+};
 
-while (allAddressBooks2.hasMoreElements()) {  
-  let addressBook = allAddressBooks2.getNext()  
-                                   .QueryInterface(Components.interfaces.nsIAbDirectory );  
-  if (addressBook instanceof Components.interfaces.nsIAbDirectory )
-  { // or nsIAbItem or nsIAbCollection
-    if(addressBook.URI == "moz-abmdbdirectory://history.mab")
-    {
-     
-      let uncarnet = addressBook.childCards;
-      while (uncarnet.hasMoreElements())
-      {
-        let contact = uncarnet.getNext().QueryInterface(Components.interfaces.nsISupports);
-        if (contact instanceof Components.interfaces.nsISupports)
-        {
-          let card = contact.QueryInterface(Components.interfaces.nsIAbCard);
-          if (card instanceof Components.interfaces.nsIAbCard)
-          {
+/*
+// see chrome://messenger/content/addressbook/abCardViewOverlay.js
+var OriginalDisplayCardViewPane = DisplayCardViewPane;
 
-//alert(card.getProperty("IdentityLink", null));
+var DisplayCardViewPane = function(realCard)
+{
+ // alert(realCard);
+ // var aCard = realCard;
+  OriginalDisplayCardViewPane.apply(realCard);
+  let gAccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
+                                    .getService(Components.interfaces.nsIMsgAccountManager);      
+  let displayLink = gAccountManager.getIdentity(card.getProperty("IdentityLink", null)).email;
+   visible = cvSetNodeWithLabel(data.cvIdentityLink, zIdentityLink,displayLink) ||
+             visible;
+ cvSetVisible(top.cvData.CardViewBox, true);
 
-          }
-        }
-      }  
-    }
-  }
-    
-}
-
-}
+};*/
 
 
+
+
+// see chrome://messenger/content/addressbook/abCardViewOverlay.js
 function DisplayCardViewPane(realCard)
 {
   var generatedName = realCard.generateName(gPrefs.getIntPref("mail.addr_book.lastnamefirst"));
@@ -213,7 +46,7 @@ function DisplayCardViewPane(realCard)
   // This will become neater when bug 312116 is fixed...
   // (card.property instead of card.getProperty("Property"))
   var card = { getProperty : function (prop) {
-                 return realCard.getProperty(prop, "");
+                return realCard.getProperty(prop, "");
                },
                primaryEmail : realCard.primaryEmail,
                displayName : realCard.displayName,
@@ -269,9 +102,14 @@ function DisplayCardViewPane(realCard)
                         card.getProperty("SecondEmail"), data.cvEmail2Box,
                         "mailto:" + card.getProperty("SecondEmail")) || visible;
 
-   visible = cvSetNodeWithLabel(data.cvIdentityLink, zIdentityLink,card.getProperty("IdentityLink")) ||
-             visible;
+//overlay
 
+  let gAccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"].getService(Components.interfaces.nsIMsgAccountManager);      
+  //let displayLink = gAccountManager.getAccount(card.getProperty("IdentityLink")).defaultIdentity.email;
+  let displayLink = gAccountManager.getIdentity(card.getProperty("IdentityLink", null)).email;
+   visible = cvSetNodeWithLabel(data.cvIdentityLink, zIdentityLink,displayLink) ||
+             visible;
+  
 
    // Home section
    visible = cvSetNode(data.cvHomeAddress, card.getProperty("HomeAddress"));
@@ -428,3 +266,4 @@ function DisplayCardViewPane(realCard)
   // make the card view box visible
   cvSetVisible(top.cvData.CardViewBox, true);
 }
+////////////////////////////////////////////////////////////////////////////////////////
