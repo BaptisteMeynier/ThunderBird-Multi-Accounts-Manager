@@ -1,24 +1,38 @@
 
 
-  var zIdentityLink;
+////////////////////////////////////////////////////////////////////////
+// Overlay of the function OnLoadCardView                             //
+// From : chrome://messenger/content/addressbook/abCardViewOverlay.js //
+////////////////////////////////////////////////////////////////////////
 
-// see chrome://messenger/content/addressbook/abCardViewOverlay.js
-var OriginalOnLoadCardView = OnLoadCardView;
+// Storage of the function into a local variable
+let OriginalOnLoadCardView = OnLoadCardView;
 
+// Declaration of the variable which will store the label of the new field
+var zIdentityLink;
+
+// Overlay Function
 var OnLoadCardView = function()
-{
-  //alert("ok");
+{ 
+  //Call of the original function
   OriginalOnLoadCardView.apply();
-
+  
+  //Adding of the field IdentityLink
   let stringBundle = document.getElementById("identitymanager-string-bundle");
   zIdentityLink = stringBundle.getString("IdentityManager.addressBook.propertyIdentityLink");
-  var doc = document;
-  cvData.cvIdentityLink = doc.getElementById("cvIdentityLink");
-
+  cvData.cvIdentityLink = document.getElementById("cvIdentityLink");
 };
 
+/////////////////////////////////////////////////////////////////////////
+// Overlay of the function OnLoadCardView                              //
+// From : chrome://messenger/content/addressbook/abCardViewOverlay.js  //
+/////////////////////////////////////////////////////////////////////////
+
+
+/**
+ * tries to store the overlay function to call its after in order to gain line code, without success ...
+ */
 /*
-// see chrome://messenger/content/addressbook/abCardViewOverlay.js
 var OriginalDisplayCardViewPane = DisplayCardViewPane;
 
 var DisplayCardViewPane = function(realCard)
@@ -35,10 +49,7 @@ var DisplayCardViewPane = function(realCard)
 
 };*/
 
-
-
-
-// see chrome://messenger/content/addressbook/abCardViewOverlay.js
+//see the middle of the function
 function DisplayCardViewPane(realCard)
 {
   var generatedName = realCard.generateName(gPrefs.getIntPref("mail.addr_book.lastnamefirst"));
@@ -102,14 +113,18 @@ function DisplayCardViewPane(realCard)
                         card.getProperty("SecondEmail"), data.cvEmail2Box,
                         "mailto:" + card.getProperty("SecondEmail")) || visible;
 
-//overlay
 
-  let gAccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"].getService(Components.interfaces.nsIMsgAccountManager);      
-  //let displayLink = gAccountManager.getAccount(card.getProperty("IdentityLink")).defaultIdentity.email;
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//                                        OVERLAY                                               //
+//////////////////////////////////////////////////////////////////////////////////////////////////
+  let gAccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
+                          .getService(Components.interfaces.nsIMsgAccountManager);      
   let displayLink = gAccountManager.getIdentity(card.getProperty("IdentityLink", null)).email;
    visible = cvSetNodeWithLabel(data.cvIdentityLink, zIdentityLink,displayLink) ||
              visible;
-  
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//                                     END    OVERLAY                                           //
+//////////////////////////////////////////////////////////////////////////////////////////////////  
 
    // Home section
    visible = cvSetNode(data.cvHomeAddress, card.getProperty("HomeAddress"));
@@ -266,4 +281,4 @@ function DisplayCardViewPane(realCard)
   // make the card view box visible
   cvSetVisible(top.cvData.CardViewBox, true);
 }
-////////////////////////////////////////////////////////////////////////////////////////
+

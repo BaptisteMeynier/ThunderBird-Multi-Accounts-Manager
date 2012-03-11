@@ -1,19 +1,29 @@
 
+/////////////////////////////////////////////////////////////////////////////
+// Overlay = > chrome://messenger/content/addressbook/abEditCardDialog.xul //
+/////////////////////////////////////////////////////////////////////////////
 
-function LoadMenuListValue()
-{
-    let menuList = document.getElementById("IdentityLink");
-    let params = window.arguments[0];
 
-    let gAccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"].getService(Components.interfaces.nsIMsgAccountManager);      
+/**
+ * Function which allow to assign the value of the IdentityLink from the selected card to the ComboBox
+ */
+function LoadMenuListValue(menuList)
+{ 
+    let gAccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
+                            .getService(Components.interfaces.nsIMsgAccountManager);
+                            
+    let params = window.arguments[0];  
     let email = gAccountManager.getIdentity(params.card.getProperty("IdentityLink", null)).email;
-
 
     menuList.setAttribute("label",email);
     menuList.setAttribute("value",params.card.getProperty("IdentityLink", null));
 }
 
-window.addEventListener("load", function load(event){  
-    LoadMenuListValue();
+/**
+ * Assigning the value of the property IdentityLink at the loading of the page
+ */
+window.addEventListener("load", function load(event){
+    let menuList = document.getElementById("IdentityLink");
+    LoadMenuListValue(menuList);
 },false);  
   

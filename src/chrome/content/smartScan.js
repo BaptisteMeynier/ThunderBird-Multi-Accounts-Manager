@@ -7,14 +7,20 @@ if ("undefined" == typeof(SmartScan)) {
   var SmartScan = {};
 };
 
-
-
+/**
+ * The feature SmartScan allows the automatically assignment of an Thunderbird account
+ * to a contact by browsing through the messages.
+ */
 SmartScan = 
 {
 
+  /**
+   * Browse all the folders from the accounts.
+   * call : this.browseMessages
+   */
   main : function()
   {
-//Iterate over the folders in an account
+    //Iterate over the folders in an account
     let acctMgr = Components.classes["@mozilla.org/messenger/account-manager;1"]  
                             .getService(Components.interfaces.nsIMsgAccountManager);  
     let accounts = acctMgr.accounts;  
@@ -28,17 +34,19 @@ SmartScan =
         while(subFolders.hasMoreElements())
         {  
           let folder = subFolders.getNext().QueryInterface(Components.interfaces.nsIMsgFolder);
-//alert(folder.URI);
           inbox = new RegExp("INBOX");
           if(inbox.test(folder.URI))
           {
-            this.listMessages(folder,account.defaultIdentity.key);
+            this.browseMessages(folder,account.defaultIdentity.key);
           }
           //Application.console.log(folder.prettiestName);  
         }  
       }  
     }  
   },
+  /**
+   * Allow to get an email address from a string of the kind : mister nothing <mister.nothing@mmm.com>
+   */
   getAddress : function (address)
   {
     let pattern = new RegExp("<");
@@ -48,6 +56,9 @@ SmartScan =
     }
     return address;
   },
+  /**
+   * Remove duplicates from an array
+   */
   deletingDuplicates : function (aArray)
   {
     let r = new Array();
@@ -64,7 +75,12 @@ SmartScan =
     }
     return r;
   },
-  listMessages : function (aFolder,identityKey)
+  /**
+   * This function allow to browse a folder in order to get some information from messages
+   * as senders, recipients.
+   * call : this.deletingDuplicates, this.updateContact
+   */
+  browseMessages : function (aFolder,identityKey)
   {  
     let database = aFolder.msgDatabase;
     let contacts = new Array();
@@ -84,7 +100,10 @@ SmartScan =
     }
     // don't forget to close the database  
     aFolder.msgDatabase = null;  
-  },  
+  },
+  /**
+   * Linking of a contact
+   */
   updateContact : function (emailContact,identityKey)
   {
     let abManager = Components.classes["@mozilla.org/abmanager;1"]  
