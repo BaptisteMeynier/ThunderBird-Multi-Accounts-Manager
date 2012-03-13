@@ -7,7 +7,8 @@
   "chrome://IdentityManager/locale/IdentityManager.dtd">
 
 <overlay id="IdentityManager-admin-overlay"
-  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+  xmlns:html="http://www.w3.org/1999/xhtml">
 
   <script type="application/x-javascript"
     src="chrome://IdentityManager/content/addressBookOverlay.js" />
@@ -32,11 +33,15 @@
 
 
   <treecols id="abResultsTreeCols">
+    <splitter ordinal="26" resizeafter="farthest" class="tree-splitter"/>
     <treecol id="IdentityLink" persist="hidden ordinal width sortDirection" flex="1" label="Identity Link" ordinal="20" width="154"/>
   </treecols>
   
   <vbox id="cvbContact" >
-  <description class="CardViewText" id="cvIdentityLink"/>
+  <description class="CardViewLink" id="cvIdentityLinkBox">
+    <html:a id="cvIdentityLink" collapsed="true"/>
+
+  </description>
   </vbox>
   
 

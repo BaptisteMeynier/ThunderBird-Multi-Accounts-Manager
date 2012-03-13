@@ -1,4 +1,10 @@
 
+    if(!String.prototype.trim) {  
+      String.prototype.trim = function () {  
+        return this.replace(/^\s+|\s+$/g,'');  
+      };  
+    }  
+
 
 ////////////////////////////////////////////////////////////////////////
 // Overlay of the function OnLoadCardView                             //
@@ -20,8 +26,11 @@ var OnLoadCardView = function()
   //Adding of the field IdentityLink
   let stringBundle = document.getElementById("identitymanager-string-bundle");
   zIdentityLink = stringBundle.getString("IdentityManager.addressBook.propertyIdentityLink");
+  cvData.cvIdentityLinkBox    = document.getElementById("cvIdentityLinkBox");
   cvData.cvIdentityLink = document.getElementById("cvIdentityLink");
 };
+
+
 
 /////////////////////////////////////////////////////////////////////////
 // Overlay of the function OnLoadCardView                              //
@@ -113,7 +122,7 @@ function DisplayCardViewPane(realCard)
                         card.getProperty("SecondEmail"), data.cvEmail2Box,
                         "mailto:" + card.getProperty("SecondEmail")) || visible;
 
-
+/*
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //                                        OVERLAY                                               //
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -122,6 +131,18 @@ function DisplayCardViewPane(realCard)
   let displayLink = gAccountManager.getIdentity(card.getProperty("IdentityLink", null)).email;
    visible = cvSetNodeWithLabel(data.cvIdentityLink, zIdentityLink,displayLink) ||
              visible;
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//                                     END    OVERLAY                                           //
+//////////////////////////////////////////////////////////////////////////////////////////////////*/
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//                                        OVERLAY                                               //
+//////////////////////////////////////////////////////////////////////////////////////////////////
+  let gAccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
+                          .getService(Components.interfaces.nsIMsgAccountManager);      
+  let displayLink = gAccountManager.getIdentity(card.getProperty("IdentityLink", null)).email;
+   visible = HandleLink(data.cvIdentityLink, zIdentityLink,
+                        displayLink,data.cvIdentityLinkBox,
+                        "mailto:" + displayLink) || visible;
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //                                     END    OVERLAY                                           //
 //////////////////////////////////////////////////////////////////////////////////////////////////  

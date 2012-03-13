@@ -18,7 +18,7 @@ SmartScan =
    * Browse all the folders from the accounts.
    * call : this.browseMessages
    */
-  main : function()
+   main : function()
   {
     //Iterate over the folders in an account
     let acctMgr = Components.classes["@mozilla.org/messenger/account-manager;1"]  
@@ -32,14 +32,19 @@ SmartScan =
       {  
         let subFolders = rootFolder.subFolders; // nsIMsgFolder  
         while(subFolders.hasMoreElements())
-        {  
-          let folder = subFolders.getNext().QueryInterface(Components.interfaces.nsIMsgFolder);
-          inbox = new RegExp("INBOX");
-          if(inbox.test(folder.URI))
+        {
+          let aFolder = subFolders.getNext().QueryInterface(Components.interfaces.nsIMsgFolder);
+          let allFolders = Components.classes["@mozilla.org/supports-array;1"]  
+                   .createInstance(Components.interfaces.nsISupportsArray);
+          aFolder.ListDescendents(allFolders);
+          for each (let theSubFolder in fixIterator(allFolders, Components.interfaces.nsIMsgFolder))
           {
-            this.browseMessages(folder,account.defaultIdentity.key);
-          }
-          //Application.console.log(folder.prettiestName);  
+            //alert(theSubFolder.URI + " " + theSubFolder.flags);
+            if(theSubFolder.flags == 134750740)
+            {
+              this.browseMessages(theSubFolder,account.defaultIdentity.key);
+            }
+          }   
         }  
       }  
     }  
@@ -59,21 +64,19 @@ SmartScan =
   /**
    * Remove duplicates from an array
    */
-  deletingDuplicates : function (aArray)
+  deletingDuplicates : function (arrayName)
   {
-    let r = new Array();
-    o:for(let i = 0, n = aArray.length; i < n; i++)
-    {
-      for(let x = 0, y = r.length; x < y; x++)
+    let newArray=new Array();
+    label:for(let i=0; i<arrayName.length;i++ )
+    {  
+      for(let j=0; j<newArray.length;j++ )
       {
-        if(r[x] == aArray[i])
-        {
-          continue o;
-        }
+        if(newArray[j]==arrayName[i]) 
+          continue label;
       }
-      r[r.length] = aArray[i];
+      newArray[newArray.length] = arrayName[i];
     }
-    return r;
+    return newArray;
   },
   /**
    * This function allow to browse a folder in order to get some information from messages
@@ -84,19 +87,23 @@ SmartScan =
   {  
     let database = aFolder.msgDatabase;
     let contacts = new Array();
-    for each (let msgHdr in fixIterator(database.EnumerateMessages(), Components.interfaces.nsIMsgDBHdr))
-    {  
-      let ccList = msgHdr.ccList;
-      contacts = contacts.concat(ccList.split(','));
-      contacts = this.deletingDuplicates(contacts);
+    let res = new Array();
 
-    }
-    for(let i=0;i<contacts.length;i++)
+    for each (let msgHdr in fixIterator(database.EnumerateMessages(), Components.interfaces.nsIMsgDBHdr))
     {
-      if(contacts[i] != "")
+      let ccList = msgHdr.ccList;
+      let recipients = msgHdr.recipients;
+      let addressIn = ccList + ", " + recipients;
+      let contacts_tmp = addressIn.split(', ');
+      for(let i=0;i<contacts_tmp.length;i++)
       {
-        this.updateContact(contacts[i],identityKey);
+        contacts.push(this.getAddress(contacts_tmp[i]).toString());
       }
+    }
+    res = this.deletingDuplicates(contacts);
+    for(let i=1;i<res.length;i++)
+    {
+      this.updateContact(res[i],identityKey);
     }
     // don't forget to close the database  
     aFolder.msgDatabase = null;  

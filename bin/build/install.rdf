@@ -4,8 +4,8 @@
   xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 
   <Description about="urn:mozilla:install-manifest">
-    <em:id>projetIndus@IdentityManager2.com</em:id>
-    <em:name>Identity Manager2</em:name>
+    <em:id>projetIndus@IdentityManager.com</em:id>
+    <em:name>Identity Manager</em:name>
     <em:description>Extend Thunderbird to help a user with multiple identities, to detect if he uses the wrong account to send a mail to a correspondent.!</em:description>
     <em:version>0.1</em:version>
     <em:creator>Baptiste Meynier</em:creator>
