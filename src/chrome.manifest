@@ -9,3 +9,5 @@ overlay chrome://messenger/content/addressbook/abNewCardDialog.xul chrome://Iden
 overlay chrome://messenger/content/addressbook/abEditCardDialog.xul chrome://IdentityManager/content/abEditCardDialogOverlay.xul
 
 overlay chrome://messenger/content/AccountManager.xul chrome://IdentityManager/content/AccountManagerOverlay.xul
+
+overlay chrome://messenger/content/messengercompose/messengercompose.xul chrome://IdentityManager/content/messengercomposeOverlay.xul

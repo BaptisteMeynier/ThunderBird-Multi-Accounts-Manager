@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet type="text/css" href="chrome://global/skin/" ?>
+
+
+<!DOCTYPE overlay SYSTEM
+  "chrome://IdentityManager/locale/IdentityManager.dtd">
+
+<overlay id="IdentityManager-admin-overlay"
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <script type="application/x-javascript"
+    src="chrome://IdentityManager/content/messengercomposeOverlay.js" />
+
+  <stringbundleset id="stringbundleset">
+    <stringbundle id="identitymanager-string-bundle"
+      src="chrome://IdentityManager/locale/IdentityManager.properties" />
+  </stringbundleset>  
+
+</overlay>
