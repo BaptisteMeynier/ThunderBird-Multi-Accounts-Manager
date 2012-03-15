@@ -138,11 +138,18 @@ function DisplayCardViewPane(realCard)
 //                                        OVERLAY                                               //
 //////////////////////////////////////////////////////////////////////////////////////////////////
   let gAccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
-                          .getService(Components.interfaces.nsIMsgAccountManager);      
-  let displayLink = gAccountManager.getIdentity(card.getProperty("IdentityLink", null)).email;
-   visible = HandleLink(data.cvIdentityLink, zIdentityLink,
-                        displayLink,data.cvIdentityLinkBox,
-                        "mailto:" + displayLink) || visible;
+                          .getService(Components.interfaces.nsIMsgAccountManager);
+  if(card.getProperty("IdentityLink", null))
+  {
+    let displayLink = gAccountManager.getIdentity(card.getProperty("IdentityLink", null)).email;
+     visible = HandleLink(data.cvIdentityLink, zIdentityLink,
+                          displayLink,data.cvIdentityLinkBox,
+                          "mailto:" + displayLink) || visible;
+  }
+  else
+  {
+    cvSetVisible(data.cvIdentityLinkBox, false);
+  }
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //                                     END    OVERLAY                                           //
 //////////////////////////////////////////////////////////////////////////////////////////////////  
