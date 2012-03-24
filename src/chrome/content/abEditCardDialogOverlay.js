@@ -8,7 +8,7 @@
  * Function which allow to assign the value of the IdentityLink from the selected card to the ComboBox
  */
 function LoadMenuListValue(menuList)
-{ 
+{
     let gAccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
                             .getService(Components.interfaces.nsIMsgAccountManager);
                             

@@ -46,7 +46,7 @@ var OriginalDisplayCardViewPane = DisplayCardViewPane;
 
 var DisplayCardViewPane = function(realCard)
 {
- // alert(realCard);
+
  // var aCard = realCard;
   OriginalDisplayCardViewPane.apply(realCard);
   let gAccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
@@ -122,18 +122,7 @@ function DisplayCardViewPane(realCard)
                         card.getProperty("SecondEmail"), data.cvEmail2Box,
                         "mailto:" + card.getProperty("SecondEmail")) || visible;
 
-/*
-//////////////////////////////////////////////////////////////////////////////////////////////////
-//                                        OVERLAY                                               //
-//////////////////////////////////////////////////////////////////////////////////////////////////
-  let gAccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
-                          .getService(Components.interfaces.nsIMsgAccountManager);      
-  let displayLink = gAccountManager.getIdentity(card.getProperty("IdentityLink", null)).email;
-   visible = cvSetNodeWithLabel(data.cvIdentityLink, zIdentityLink,displayLink) ||
-             visible;
-//////////////////////////////////////////////////////////////////////////////////////////////////
-//                                     END    OVERLAY                                           //
-//////////////////////////////////////////////////////////////////////////////////////////////////*/
+
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //                                        OVERLAY                                               //
 //////////////////////////////////////////////////////////////////////////////////////////////////

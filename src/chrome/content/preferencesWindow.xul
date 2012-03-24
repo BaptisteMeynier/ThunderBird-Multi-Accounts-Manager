@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet type="text/css" href="chrome://global/skin/" ?>
+
+
+<!DOCTYPE overlay SYSTEM
+  "chrome://IdentityManager/locale/IdentityManager.dtd">
+
+<prefwindow dlgbuttons="accept" id="extensionIdentityManagerPreferences"
+            xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+            title="Identity Manager's Extension preferences">
+
+    <script type="application/x-javascript" src="chrome://IdentityManager/content/smartScan.js" />
+
+  <stringbundleset id="stringbundleset">
+    <stringbundle id="identitymanager-string-bundle"
+      src="chrome://IdentityManager/locale/IdentityManager.properties" />
+  </stringbundleset>  
+
+    <prefpane id="pane1" label="Extension Developer's Extension preferences" selected="false">
+        <vbox>
+            <hbox>
+                <vbox valign="middle">
+                    <label value="&IdentityManager.preferencespan.smartscan;"/>
+                </vbox>
+                <button id="button-smartscan" label="&IdentityManager.smartscan.validation;" oncommand="SmartScan.main();"
+                        tooltiptext="&IdentityManager.addressBook.toolbar.smartscan.tooltiptext;"/>
+            </hbox>
+        </vbox>
+    </prefpane>
+</prefwindow>

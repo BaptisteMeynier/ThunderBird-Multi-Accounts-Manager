@@ -29,6 +29,11 @@ function LoadMenuList(elementMenuPopup)
     
            elementMenuPopup.appendChild(menuItem);
         }
+        let menuItem = document.createElement("menuitem");
+        menuItem.setAttribute("label","");
+        menuItem.setAttribute("value","");
+    
+        elementMenuPopup.appendChild(menuItem);
 }
 
 /**

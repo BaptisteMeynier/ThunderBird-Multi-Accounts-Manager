@@ -16,65 +16,111 @@ SmartScan =
 
   /**
    * Browse all the folders from the accounts.
-   * call : this.browseMessages
+   * call : this.browseFolders, this.browseMessages (into thread)
    */
-   main : function()
+  main : function()
   {
-    //Iterate over the folders in an account
+    setTimeout(SmartScan.execute,0);
+  },
+  execute : function()
+  {
     let acctMgr = Components.classes["@mozilla.org/messenger/account-manager;1"]  
                             .getService(Components.interfaces.nsIMsgAccountManager);  
-    let accounts = acctMgr.accounts;  
+    let accounts = acctMgr.accounts;
+    //Iterate over the folders in an account
     for (let i = 0; i < accounts.Count(); i++)
-    {  
+    {
+      let account = accounts.QueryElementAt(i, Components.interfaces.nsIMsgAccount);
+     // alert(account.defaultIdentity.key);
+      let rootFolder = account.incomingServer.rootFolder; // nsIMsgFolder
+      if(account.defaultIdentity)
+      {
+        if (rootFolder.hasSubFolders)
+        {  
+          let subFolder = rootFolder.subFolders; // nsIMsgFolder  
+          SmartScan.browseFolders(subFolder,account.defaultIdentity.key);
+        } 
+      }
+    }  
+  },
+  main2 : function()
+  {
+    
+    const nsMsgFolderFlags = Components.interfaces.nsMsgFolderFlags;
+    let k = 0;
+    let acctMgr = Components.classes["@mozilla.org/messenger/account-manager;1"]  
+                            .getService(Components.interfaces.nsIMsgAccountManager);  
+    let accounts = acctMgr.accounts;
+    //Iterate over the folders in an account
+    for (let i = 0; i < accounts.Count(); i++)
+    {
+      let foldersArray = new Array();
       let account = accounts.QueryElementAt(i, Components.interfaces.nsIMsgAccount);  
       let rootFolder = account.incomingServer.rootFolder; // nsIMsgFolder
       if (rootFolder.hasSubFolders)
       {  
-        let subFolders = rootFolder.subFolders; // nsIMsgFolder  
-        while(subFolders.hasMoreElements())
-        {
-          let aFolder = subFolders.getNext().QueryInterface(Components.interfaces.nsIMsgFolder);
-          let allFolders = Components.classes["@mozilla.org/supports-array;1"]  
-                   .createInstance(Components.interfaces.nsISupportsArray);
-          aFolder.ListDescendents(allFolders);
-          for each (let theSubFolder in fixIterator(allFolders, Components.interfaces.nsIMsgFolder))
+        let subFolder = rootFolder.subFolders; // nsIMsgFolder  
+        foldersArray = foldersArray.concat(SmartScan.browseFolders(subFolder));
+      }
+      for(let j = 0 ; j < foldersArray.length;j++)
+      {
+        backgroundTask = {
+          run: function()
           {
-            //alert(theSubFolder.URI + " " + theSubFolder.flags);
-            if(theSubFolder.flags == 134750740)
-            {
-              this.browseMessages(theSubFolder,account.defaultIdentity.key);
-            }
-          }   
-        }  
-      }  
+            SmartScan.browseMessages(foldersArray[j],account.defaultIdentity.key);
+          }
+        }
+    
+        let thread = Components.classes["@mozilla.org/thread-manager;1"]
+                          .getService(Components.interfaces.nsIThreadManager)
+                          .newThread(++k);
+        thread.dispatch(backgroundTask, thread.DISPATCH_NORMAL);
+        backgroundTask.run();
+      }
+      foldersArray = null;
     }  
   },
-  /**
-   * Allow to get an email address from a string of the kind : mister nothing <mister.nothing@mmm.com>
-   */
-  getAddress : function (address)
+  browseFolders : function (aFolder,identityKey)
   {
-    let pattern = new RegExp("<");
-    if(pattern.test(address))
+    const nsMsgFolderFlags = Components.interfaces.nsMsgFolderFlags;
+    let res = new Array();
+    while(aFolder.hasMoreElements())
     {
-      address = address.match("[a-z0-9._-]+@[a-z0-9._-]+\.[a-z]{2,6}");
+      let theSubFolder = aFolder.getNext().QueryInterface(Components.interfaces.nsIMsgFolder);
+      if(theSubFolder.isSpecialFolder(nsMsgFolderFlags.SentMail,false) ||
+                                  theSubFolder.isSpecialFolder(nsMsgFolderFlags.Inbox,false))
+      {
+        SmartScan.browseMessages(theSubFolder,identityKey);
+      }
+      if(theSubFolder.hasSubFolders)
+      {
+        let aFolder2 = theSubFolder.subFolders;
+        while(aFolder2.hasMoreElements())
+        {
+          let theSubFolder2 = aFolder2.getNext().QueryInterface(Components.interfaces.nsIMsgFolder);
+          if(theSubFolder2.isSpecialFolder(nsMsgFolderFlags.SentMail,false) ||
+                                    theSubFolder2.isSpecialFolder(nsMsgFolderFlags.Inbox,false))
+          {
+            SmartScan.browseMessages(theSubFolder2,identityKey);
+          }
+        }
+      }
     }
-    return address;
   },
   /**
    * Remove duplicates from an array
    */
-  deletingDuplicates : function (arrayName)
+  deletingDuplicates : function (aArray)
   {
     let newArray=new Array();
-    label:for(let i=0; i<arrayName.length;i++ )
+    label:for(let i=0; i<aArray.length;i++ )
     {  
       for(let j=0; j<newArray.length;j++ )
       {
-        if(newArray[j]==arrayName[i]) 
+        if(newArray[j]==aArray[i]) 
           continue label;
       }
-      newArray[newArray.length] = arrayName[i];
+      newArray[newArray.length] = aArray[i];
     }
     return newArray;
   },
@@ -84,26 +130,34 @@ SmartScan =
    * call : this.deletingDuplicates, this.updateContact
    */
   browseMessages : function (aFolder,identityKey)
-  {  
+  {
     let database = aFolder.msgDatabase;
     let contacts = new Array();
     let res = new Array();
+
+
+    let hdrParser = Components.classes["@mozilla.org/messenger/headerparser;1"]
+                           .getService(Components.interfaces.nsIMsgHeaderParser);
+    
 
     for each (let msgHdr in fixIterator(database.EnumerateMessages(), Components.interfaces.nsIMsgDBHdr))
     {
       let ccList = msgHdr.ccList;
       let recipients = msgHdr.recipients;
       let addressIn = ccList + ", " + recipients;
-      let contacts_tmp = addressIn.split(', ');
-      for(let i=0;i<contacts_tmp.length;i++)
-      {
-        contacts.push(this.getAddress(contacts_tmp[i]).toString());
-      }
+      let address ={};
+      let names = {};
+      let fullNames = {};
+
+      hdrParser.parseHeadersWithArray(addressIn, address, names, fullNames, 0);
+
+      contacts = contacts.concat(address.value);
+
     }
-    res = this.deletingDuplicates(contacts);
+    res = SmartScan.deletingDuplicates(contacts);
     for(let i=1;i<res.length;i++)
     {
-      this.updateContact(res[i],identityKey);
+      SmartScan.updateContact(res[i],identityKey);
     }
     // don't forget to close the database  
     aFolder.msgDatabase = null;  
@@ -119,7 +173,7 @@ SmartScan =
     let allAddressBooks = abManager.directories;   
 
     while (allAddressBooks.hasMoreElements())
-    {  
+    {
       let addressBook = allAddressBooks.getNext()  
                                        .QueryInterface(Components.interfaces.nsIAbDirectory );  
       if (addressBook instanceof Components.interfaces.nsIAbDirectory )
@@ -127,9 +181,11 @@ SmartScan =
         let alldirectories = addressBook.childCards;
         while (alldirectories.hasMoreElements())
         {
-          let acard = alldirectories.getNext().QueryInterface(Components.interfaces.nsIAbCard);
+          let element = alldirectories.getNext();
+          let acard = element.QueryInterface(Components.interfaces.nsIAbCard);
+
           if (acard instanceof Components.interfaces.nsIAbCard)
-          { 
+          {
             if(acard.primaryEmail == emailContact)
             {
               acard.setProperty("IdentityLink",identityKey);

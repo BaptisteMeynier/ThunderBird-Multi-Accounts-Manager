@@ -32,8 +32,20 @@ function onRemoveAccount(event) {
     return;
 
   try {
-    initialiseCards (account.key);
-    
+    ////////////////////////////OVERRIDE///////////////////////////////
+    backgroundTask = {
+      run: function()
+      {
+        initialiseCards (account.key);
+      }
+    }
+
+    let thread = Components.classes["@mozilla.org/thread-manager;1"]
+              .getService(Components.interfaces.nsIThreadManager)
+              .newThread(0);
+    thread.dispatch(backgroundTask, thread.DISPATCH_NORMAL);
+    backgroundTask.run();
+    ///////////////////////////////////////////////////////////////////
     // clear cached data out of the account array
     currentAccount = currentPageId = null;
 

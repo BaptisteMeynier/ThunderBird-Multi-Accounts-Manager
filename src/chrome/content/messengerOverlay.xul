@@ -6,11 +6,13 @@
 <!DOCTYPE overlay SYSTEM
   "chrome://IdentityManager/locale/IdentityManager.dtd">
 
-<overlay id="IdentityManager-accountManager-overlay"
+<overlay id="IdentityManager-messenger-overlay"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <script type="application/x-javascript"
-    src="chrome://IdentityManager/content/AccountManagerOverlay.js" />
+    src="chrome://IdentityManager/content/messengerOverlay.js" />
+
+  <script type="application/x-javascript" src="chrome://IdentityManager/content/smartScan.js" />
 
   <stringbundleset id="stringbundleset">
     <stringbundle id="identitymanager-string-bundle"

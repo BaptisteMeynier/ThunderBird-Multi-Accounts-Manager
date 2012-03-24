@@ -6,7 +6,7 @@
 <!DOCTYPE overlay SYSTEM
   "chrome://IdentityManager/locale/IdentityManager.dtd">
 
-<overlay id="IdentityManager-admin-overlay"
+<overlay id="IdentityManager-addressBook-overlay"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
   xmlns:html="http://www.w3.org/1999/xhtml">
 
@@ -15,21 +15,11 @@
 
   <script type="application/x-javascript"
     src="chrome://IdentityManager/content/customAbResultsTree.js" />
-
-  <script type="application/x-javascript"
-    src="chrome://IdentityManager/content/smartScan.js" />
-
+  
   <stringbundleset id="stringbundleset">
     <stringbundle id="identitymanager-string-bundle"
       src="chrome://IdentityManager/locale/IdentityManager.properties" />
   </stringbundleset>  
-
-  <toolbar id="ab-bar2" >
-    <!--toolbarseparator id="separator13314610920533" insertafter="button-abdelete"/-->
-    <toolbarbutton class="toolbarbutton-1" id="button-smartscan" label="&IdentityManager.addressBook.toolbar.smartscan.label;"
-                   oncommand="SmartScan.main();" tooltiptext="&IdentityManager.addressBook.toolbar.smartscan.tooltiptext;"
-                   insertafter="button-abdelete"/>
-  </toolbar>
 
 
   <treecols id="abResultsTreeCols">

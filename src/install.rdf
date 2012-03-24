@@ -13,6 +13,7 @@
     <em:creator>Maxime Denoyer</em:creator>
     <em:creator>Mustapha Oucheikh</em:creator>
     <em:homepageURL>http://baptistemeynier.github.com/ThunderBird_Multi_Accounts_Manager/</em:homepageURL>
+    <em:optionsURL>chrome://IdentityManager/content/preferencesWindow.xul</em:optionsURL>
     <em:type>2</em:type>
 
     <!-- Mozilla ThunderBird-->

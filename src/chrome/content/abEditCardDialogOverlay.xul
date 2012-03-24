@@ -6,7 +6,7 @@
 <!DOCTYPE overlay SYSTEM
   "chrome://IdentityManager/locale/IdentityManager.dtd">
 
-<overlay id="ThunderBirdMultiAccountsManager-admin-overlay"
+<overlay id="IdentityManager-abEditCardDialog-overlay"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <script type="application/x-javascript"
@@ -19,15 +19,17 @@
     <stringbundle id="browser-string-bundle"
       src="chrome://IdentityManager/locale/IdentityManager.properties" />
   </stringbundleset>
-  
-    <vbox id="PhoneNumbers">
-    <hbox id="IdentityLinkContainer" align="center">
-      <spacer flex="1"/>
-      <label control="IdentityLink" value="&IdentityManager.addressBook.propertyIdentityLink;"/>
-       <menulist id="IdentityLink" class="PhoneEditWidth" >
+
+  <vbox id="abNameTab">
+    <hbox id="IdentityLinkContainer">
+      <vbox valign="middle">
+        <label control="IdentityLink" value="&IdentityManager.cardDialog.propertyUseAccount;"/>
+      </vbox>
+      <menulist id="IdentityLink">
         <menupopup id="msgIdentityPopup" />
       </menulist>
     </hbox>
   </vbox>
+
 
 </overlay>

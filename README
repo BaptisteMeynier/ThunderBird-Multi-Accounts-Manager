@@ -1,2 +1,33 @@
+===========================================================================
+                                                                       
+                                ======
+                                README
+                                ======
+                                                                       
+                   AddressBookMultiAccountManager v0.1
+                             14 March 2012
+                                                                       
+                        ThunderBird extension
 
-To extend Thunderbird to help a user with multiple accounts, to detect if he uses the wrong account to send a mail to a correspondent.
+                   Mozilla // University of Orleans
+
+web: http://baptistemeynier.github.com/ThunderBird-Multi-Accounts-Manager/
+                                                                       
+===========================================================================
+
+
+This project aims at allowing ThunderBird's users who have multiple accounts
+to match a contact from the AddressBook to one ThunderBird Account. An alert
+is displayed when the user sends an email to a contact which is not matched 
+with the selected account. There is also a feature into the preferences panel, 
+which allows to automatically fecth a user account to your contacts by browsing
+your email.
+
+
+Install
+Drag and drop the xpi file (located in /bin directory) onto your browser.
+
+
+Contact
+Baptiste (baptiste.meynier@gmail.com) 
+

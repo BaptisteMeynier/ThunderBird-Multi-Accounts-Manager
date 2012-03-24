@@ -2,7 +2,7 @@
 extension_name := IdentityManager
 
 # The UUID of the extension.
-extension_uuid := projetIndus@IdentityManager.com
+extension_uuid := projetIndus@ThunderBirdMultiAccountsManager.com
 
 # The name of the profile dir where the extension can be installed.
 profile_dir := IdentityManager
@@ -42,6 +42,12 @@ install_rdf := install.rdf
 # The chrome.manifest file.
 chrome_manifest := chrome.manifest
 
+# The modules (JSM) dir.
+modules_dir := modules
+
+# The defaults dir.
+defaults_dir := defaults
+
 # The preferences dir.
 preferences_dir := $(defaults_dir)/preferences
 
@@ -62,12 +68,15 @@ clean:
 # The includes are added after the targets because we want this file to contain
 # the default (first) target.
 include chrome/Makefile.in
+include modules/Makefile.in
 
 # The sources for the XPI file. Uses variables defined in the included
 # Makefiles.
 xpi_built := $(build_dir)/$(install_rdf) \
              $(build_dir)/$(chrome_manifest) \
              $(chrome_jar_file) \
+             $(addprefix $(build_dir)/,$(modules_sources)) \
+             $(build_dir)/$(preferences_dir)/$(extension_name).js
 
 xpi_built_no_dir := $(subst $(build_dir)/,,$(xpi_built))
 
@@ -85,6 +94,28 @@ $(xpi_file): $(build_dir) $(xpi_built)
 	@cd $(build_dir); $(ZIP) ../$(xpi_file) $(xpi_built_no_dir)
 	@echo "Creating XPI file. Done!"
 
+$(build_dir)/$(modules_dir)/%: $(modules_dir)/% $(build_dir)/$(modules_dir)
+	@cp -f $< $@
+
+$(build_dir)/$(preferences_dir)/%: \
+  $(preferences_dir)/% $(build_dir)/$(preferences_dir)
+	@cp -f $< $@
+
+$(build_dir)/$(defaults_dir)/%: $(defaults_dir)/% $(build_dir)/$(defaults_dir)
+	@cp -f $< $@
+
+$(build_dir)/$(preferences_dir): $(build_dir)/$(defaults_dir)
+	@if [ ! -x $(build_dir)/$(preferences_dir) ]; \
+  then \
+    mkdir $(build_dir)/$(preferences_dir); \
+  fi
+
+$(build_dir)/$(defaults_dir):
+	@if [ ! -x $(build_dir)/$(defaults_dir) ]; \
+  then \
+    mkdir $(build_dir)/$(defaults_dir); \
+  fi
+
 $(build_dir)/%: %
 	@cp -f $< $@
 
@@ -94,3 +125,8 @@ $(build_dir):
     mkdir $(build_dir); \
   fi
 
+$(build_dir)/$(modules_dir):
+	@if [ ! -x $(build_dir)/$(modules_dir) ]; \
+  then \
+    mkdir $(build_dir)/$(modules_dir); \
+  fi
