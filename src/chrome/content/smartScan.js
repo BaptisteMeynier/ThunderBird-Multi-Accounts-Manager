@@ -1,27 +1,34 @@
 
-//////////////////////////SMART SCAN///////////////////
-
 Components.utils.import("resource:///modules/iteratorUtils.jsm");
 
-if ("undefined" == typeof(SmartScan)) {
-  var SmartScan = {};
+Components.utils.import("resource://AddressBookMultiAccountsManager/common.js");
+Components.utils.import("resource://AddressBookMultiAccountsManager/ScanDetect.js");
+
+/**
+ * AddressBookMultiAccountsManager namespace.
+ */
+if ("undefined" == typeof(AddressBookMultiAccountsManager)) {
+  var AddressBookMultiAccountsManager = {};
 };
 
 /**
- * The feature SmartScan allows the automatically assignment of an Thunderbird account
- * to a contact by browsing through the messages.
+ * SmartScan allows to automatically assign an Thunderbird account
+ * to a contact by browsing through the messages (Sent Box and INBOX).
  */
-SmartScan = 
+AddressBookMultiAccountsManager.SmartScan = 
 {
 
   /**
-   * Browse all the folders from the accounts.
-   * call : this.browseFolders, this.browseMessages (into thread)
+   * SmartScan is an asynchronous method
    */
   main : function()
   {
-    setTimeout(SmartScan.execute,0);
+    AddressBookMultiAccountsManager.ScanDetect.setScan(true);
+    setTimeout(AddressBookMultiAccountsManager.SmartScan.execute,0);
   },
+  /**
+   * This method gets for each account, its folders and performs a search inside
+   */
   execute : function()
   {
     let acctMgr = Components.classes["@mozilla.org/messenger/account-manager;1"]  
@@ -31,55 +38,20 @@ SmartScan =
     for (let i = 0; i < accounts.Count(); i++)
     {
       let account = accounts.QueryElementAt(i, Components.interfaces.nsIMsgAccount);
-     // alert(account.defaultIdentity.key);
       let rootFolder = account.incomingServer.rootFolder; // nsIMsgFolder
       if(account.defaultIdentity)
       {
         if (rootFolder.hasSubFolders)
         {  
           let subFolder = rootFolder.subFolders; // nsIMsgFolder  
-          SmartScan.browseFolders(subFolder,account.defaultIdentity.key);
+          AddressBookMultiAccountsManager.SmartScan.browseFolders(subFolder,account.defaultIdentity.key);
         } 
       }
     }  
   },
-  main2 : function()
-  {
-    
-    const nsMsgFolderFlags = Components.interfaces.nsMsgFolderFlags;
-    let k = 0;
-    let acctMgr = Components.classes["@mozilla.org/messenger/account-manager;1"]  
-                            .getService(Components.interfaces.nsIMsgAccountManager);  
-    let accounts = acctMgr.accounts;
-    //Iterate over the folders in an account
-    for (let i = 0; i < accounts.Count(); i++)
-    {
-      let foldersArray = new Array();
-      let account = accounts.QueryElementAt(i, Components.interfaces.nsIMsgAccount);  
-      let rootFolder = account.incomingServer.rootFolder; // nsIMsgFolder
-      if (rootFolder.hasSubFolders)
-      {  
-        let subFolder = rootFolder.subFolders; // nsIMsgFolder  
-        foldersArray = foldersArray.concat(SmartScan.browseFolders(subFolder));
-      }
-      for(let j = 0 ; j < foldersArray.length;j++)
-      {
-        backgroundTask = {
-          run: function()
-          {
-            SmartScan.browseMessages(foldersArray[j],account.defaultIdentity.key);
-          }
-        }
-    
-        let thread = Components.classes["@mozilla.org/thread-manager;1"]
-                          .getService(Components.interfaces.nsIThreadManager)
-                          .newThread(++k);
-        thread.dispatch(backgroundTask, thread.DISPATCH_NORMAL);
-        backgroundTask.run();
-      }
-      foldersArray = null;
-    }  
-  },
+  /**
+   * Browse folders of type sentMail and Inbox then launches this.browserMessages for each of them.
+   */
   browseFolders : function (aFolder,identityKey)
   {
     const nsMsgFolderFlags = Components.interfaces.nsMsgFolderFlags;
@@ -90,7 +62,7 @@ SmartScan =
       if(theSubFolder.isSpecialFolder(nsMsgFolderFlags.SentMail,false) ||
                                   theSubFolder.isSpecialFolder(nsMsgFolderFlags.Inbox,false))
       {
-        SmartScan.browseMessages(theSubFolder,identityKey);
+        AddressBookMultiAccountsManager.SmartScan.browseMessages(theSubFolder,identityKey);
       }
       if(theSubFolder.hasSubFolders)
       {
@@ -101,7 +73,7 @@ SmartScan =
           if(theSubFolder2.isSpecialFolder(nsMsgFolderFlags.SentMail,false) ||
                                     theSubFolder2.isSpecialFolder(nsMsgFolderFlags.Inbox,false))
           {
-            SmartScan.browseMessages(theSubFolder2,identityKey);
+            AddressBookMultiAccountsManager.SmartScan.browseMessages(theSubFolder2,identityKey);
           }
         }
       }
@@ -125,9 +97,8 @@ SmartScan =
     return newArray;
   },
   /**
-   * This function allow to browse a folder in order to get some information from messages
-   * as senders, recipients.
-   * call : this.deletingDuplicates, this.updateContact
+   * This method allow to browse a folder in order to get some information about messages
+   * as the sender or recipients.
    */
   browseMessages : function (aFolder,identityKey)
   {
@@ -154,16 +125,17 @@ SmartScan =
       contacts = contacts.concat(address.value);
 
     }
-    res = SmartScan.deletingDuplicates(contacts);
+    //Deleting duplicates
+    res = AddressBookMultiAccountsManager.SmartScan.deletingDuplicates(contacts);
     for(let i=1;i<res.length;i++)
     {
-      SmartScan.updateContact(res[i],identityKey);
+      AddressBookMultiAccountsManager.SmartScan.updateContact(res[i],identityKey);
     }
     // don't forget to close the database  
     aFolder.msgDatabase = null;  
   },
   /**
-   * Linking of a contact
+   * Updates the value of the contact
    */
   updateContact : function (emailContact,identityKey)
   {
@@ -188,7 +160,7 @@ SmartScan =
           {
             if(acard.primaryEmail == emailContact)
             {
-              acard.setProperty("IdentityLink",identityKey);
+              acard.setProperty("ABMAM_UseAccount",identityKey);
               addressBook.modifyCard(acard);  
             }
           }

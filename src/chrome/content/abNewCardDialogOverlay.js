@@ -5,9 +5,9 @@
 
 
 /** Item is |[dialogField, cardProperty]|.
- * Adding of the field IdentityLink into the DialogBox
+ * Adding of the field UseAccount into the DialogBox
  */
-kVcardFields.push( ["IdentityLink", "IdentityLink"]);
+kVcardFields.push( ["ABMAM_UseAccount", "ABMAM_UseAccount"]);
 
 /**
  * Allows to generate a list of identities that the user can link with a contact

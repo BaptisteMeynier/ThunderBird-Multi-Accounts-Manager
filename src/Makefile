@@ -1,11 +1,11 @@
 # The name of the extension.
-extension_name := IdentityManager
+extension_name := AddressBookMultiAccountsManager
 
 # The UUID of the extension.
-extension_uuid := projetIndus@ThunderBirdMultiAccountsManager.com
+extension_uuid := projetIndus@AddressBookMultiAccountsManager.com
 
 # The name of the profile dir where the extension can be installed.
-profile_dir := IdentityManager
+profile_dir := AddressBookMultiAccountsManager
 
 # The zip application to be used.
 ZIP := zip

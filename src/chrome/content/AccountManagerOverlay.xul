@@ -4,18 +4,12 @@
 
 
 <!DOCTYPE overlay SYSTEM
-  "chrome://IdentityManager/locale/IdentityManager.dtd">
+  "chrome://AddressBookMultiAccountsManager/locale/IdentityManager.dtd">
 
-<overlay id="IdentityManager-accountManager-overlay"
+<overlay id="AddressBookMultiAccountsManager-accountManager-overlay"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <script type="application/x-javascript"
-    src="chrome://IdentityManager/content/AccountManagerOverlay.js" />
-
-  <stringbundleset id="stringbundleset">
-    <stringbundle id="identitymanager-string-bundle"
-      src="chrome://IdentityManager/locale/IdentityManager.properties" />
-  </stringbundleset>  
-
+    src="chrome://AddressBookMultiAccountsManager/content/AccountManagerOverlay.js" />
   
 </overlay>

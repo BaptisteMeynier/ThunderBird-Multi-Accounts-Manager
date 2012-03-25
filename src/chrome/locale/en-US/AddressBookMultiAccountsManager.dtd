@@ -1,0 +1,15 @@
+
+
+<!ENTITY AddressBookMultiAccountsManager.prefWindow.title "AdressBook Multi Accounts Manager's Extension preferences">
+
+<!ENTITY AddressBookMultiAccountsManager.prefWindow.panel.label "Extension Developer's Extension preferences">
+
+<!ENTITY AddressBookMultiAccountsManager.prefWindow.prefPane.label "Browse your sent mails and links your Address Book Contact to a mail account">
+
+<!ENTITY AddressBookMultiAccountsManager.smartscan.validation "Execute">
+
+<!ENTITY AddressBookMultiAccountsManager.addressBook.abResults.label "Use Account">
+
+<!ENTITY AddressBookMultiAccountsManager.addressBook.abResults.persist "hidden ordinal width sortDirection">
+
+<!ENTITY AddressBookMultiAccountsManager.cardDialog.propertyUseAccount.label "Find out which account is used to communicate with this person :">

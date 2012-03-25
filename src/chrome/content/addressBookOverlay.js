@@ -15,7 +15,7 @@
 let OriginalOnLoadCardView = OnLoadCardView;
 
 // Declaration of the variable which will store the label of the new field
-var zIdentityLink;
+var zABMAM_UseAccount;
 
 // Overlay Function
 var OnLoadCardView = function()
@@ -24,10 +24,10 @@ var OnLoadCardView = function()
   OriginalOnLoadCardView.apply();
   
   //Adding of the field IdentityLink
-  let stringBundle = document.getElementById("identitymanager-string-bundle");
-  zIdentityLink = stringBundle.getString("IdentityManager.addressBook.propertyIdentityLink");
-  cvData.cvIdentityLinkBox    = document.getElementById("cvIdentityLinkBox");
-  cvData.cvIdentityLink = document.getElementById("cvIdentityLink");
+  let stringBundle = document.getElementById("AddressBookMultiAccountsManager-string-bundle");
+  zABMAM_UseAccount = stringBundle.getString("AddressBookMultiAccountsManager.addressBook.cardView.useAccount.label");
+  cvData.cvABMAM_UseAccountBox    = document.getElementById("cvABMAM_UseAccountBox");
+  cvData.cvABMAM_UseAccount = document.getElementById("cvABMAM_UseAccount");
 };
 
 
@@ -128,16 +128,16 @@ function DisplayCardViewPane(realCard)
 //////////////////////////////////////////////////////////////////////////////////////////////////
   let gAccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
                           .getService(Components.interfaces.nsIMsgAccountManager);
-  if(card.getProperty("IdentityLink", null))
+  if(card.getProperty("ABMAM_UseAccount", null))
   {
-    let displayLink = gAccountManager.getIdentity(card.getProperty("IdentityLink", null)).email;
-     visible = HandleLink(data.cvIdentityLink, zIdentityLink,
-                          displayLink,data.cvIdentityLinkBox,
+    let displayLink = gAccountManager.getIdentity(card.getProperty("ABMAM_UseAccount", null)).email;
+     visible = HandleLink(data.cvABMAM_UseAccount, zABMAM_UseAccount,
+                          displayLink,data.cvABMAM_UseAccountBox,
                           "mailto:" + displayLink) || visible;
   }
   else
   {
-    cvSetVisible(data.cvIdentityLinkBox, false);
+    cvSetVisible(data.cvABMAM_UseAccountBox, false);
   }
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //                                     END    OVERLAY                                           //

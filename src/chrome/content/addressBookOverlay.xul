@@ -4,34 +4,35 @@
 
 
 <!DOCTYPE overlay SYSTEM
-  "chrome://IdentityManager/locale/IdentityManager.dtd">
+  "chrome://AddressBookMultiAccountsManager/locale/AddressBookMultiAccountsManager.dtd">
 
-<overlay id="IdentityManager-addressBook-overlay"
+<overlay id="AddressBookMultiAccountsManager-addressBook-overlay"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
   xmlns:html="http://www.w3.org/1999/xhtml">
 
   <script type="application/x-javascript"
-    src="chrome://IdentityManager/content/addressBookOverlay.js" />
+    src="chrome://AddressBookMultiAccountsManager/content/addressBookOverlay.js" />
 
   <script type="application/x-javascript"
-    src="chrome://IdentityManager/content/customAbResultsTree.js" />
+    src="chrome://AddressBookMultiAccountsManager/content/customAbResultsTree.js" />
   
   <stringbundleset id="stringbundleset">
-    <stringbundle id="identitymanager-string-bundle"
-      src="chrome://IdentityManager/locale/IdentityManager.properties" />
+    <stringbundle id="AddressBookMultiAccountsManager-string-bundle"
+      src="chrome://AddressBookMultiAccountsManager/locale/AddressBookMultiAccountsManager.properties" />
   </stringbundleset>  
 
 
   <treecols id="abResultsTreeCols">
     <splitter ordinal="26" resizeafter="farthest" class="tree-splitter"/>
-    <treecol id="IdentityLink" persist="hidden ordinal width sortDirection" flex="1" label="Identity Link" ordinal="20" width="154"/>
+    <treecol id="ABMAM_UseAccount" label="&AddressBookMultiAccountsManager.addressBook.abResults.label;"
+             persist="&AddressBookMultiAccountsManager.addressBook.abResults.persist;"
+             flex="1" ordinal="20" width="154"/>
   </treecols>
   
   <vbox id="cvbContact" >
-  <description class="CardViewLink" id="cvIdentityLinkBox">
-    <html:a id="cvIdentityLink" collapsed="true"/>
-
-  </description>
+    <description class="CardViewLink" id="cvABMAM_UseAccountBox">
+      <html:a id="cvABMAM_UseAccount" collapsed="true"/>
+    </description>
   </vbox>
   
 

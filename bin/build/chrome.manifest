@@ -1,16 +1,16 @@
-content   IdentityManager                jar:chrome/IdentityManager.jar!/content/
-skin      IdentityManager  classic/1.0   jar:chrome/IdentityManager.jar!/skin/
-locale    IdentityManager  en-US         jar:chrome/IdentityManager.jar!/locale/en-US/
-resource  IdentityManager                modules/
+content   AddressBookMultiAccountsManager                jar:chrome/AddressBookMultiAccountsManager.jar!/content/
+skin      AddressBookMultiAccountsManager  classic/1.0   jar:chrome/AddressBookMultiAccountsManager.jar!/skin/
+locale    AddressBookMultiAccountsManager  en-US         jar:chrome/AddressBookMultiAccountsManager.jar!/locale/en-US/
+resource  AddressBookMultiAccountsManager                modules/
 
-overlay chrome://messenger/content/addressbook/addressbook.xul chrome://IdentityManager/content/addressBookOverlay.xul
+overlay chrome://messenger/content/addressbook/addressbook.xul chrome://AddressBookMultiAccountsManager/content/addressBookOverlay.xul
 
-overlay chrome://messenger/content/addressbook/abNewCardDialog.xul chrome://IdentityManager/content/abNewCardDialogOverlay.xul
+overlay chrome://messenger/content/addressbook/abNewCardDialog.xul chrome://AddressBookMultiAccountsManager/content/abNewCardDialogOverlay.xul
 
-overlay chrome://messenger/content/addressbook/abEditCardDialog.xul chrome://IdentityManager/content/abEditCardDialogOverlay.xul
+overlay chrome://messenger/content/addressbook/abEditCardDialog.xul chrome://AddressBookMultiAccountsManager/content/abEditCardDialogOverlay.xul
 
-overlay chrome://messenger/content/AccountManager.xul chrome://IdentityManager/content/AccountManagerOverlay.xul
+overlay chrome://messenger/content/AccountManager.xul chrome://AddressBookMultiAccountsManager/content/AccountManagerOverlay.xul
 
-overlay chrome://messenger/content/messengercompose/messengercompose.xul chrome://IdentityManager/content/messengercomposeOverlay.xul
+overlay chrome://messenger/content/messengercompose/messengercompose.xul chrome://AddressBookMultiAccountsManager/content/messengercomposeOverlay.xul
 
-overlay chrome://messenger/content/messenger.xul chrome://IdentityManager/content/messengerOverlay.xul
+overlay chrome://messenger/content/messenger.xul chrome://AddressBookMultiAccountsManager/content/messengerOverlay.xul

@@ -4,26 +4,21 @@
 
 
 <!DOCTYPE overlay SYSTEM
-  "chrome://IdentityManager/locale/IdentityManager.dtd">
+  "chrome://AddressBookMultiAccountsManager/locale/AddressBookMultiAccountsManager.dtd">
 
-<overlay id="IdentityManager-abNewCardDialog-overlay"
+<overlay id="AddressBookMultiAccountsManager-abNewCardDialog-overlay"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <script type="application/x-javascript"
-    src="chrome://IdentityManager/content/abNewCardDialogOverlay.js" />
-
-  <stringbundleset id="stringbundleset">
-    <stringbundle id="browser-string-bundle"
-      src="chrome://IdentityManager/locale/IdentityManager.properties" />
-  </stringbundleset>
-  
+    src="chrome://AddressBookMultiAccountsManager/content/abNewCardDialogOverlay.js" />
   
   <vbox id="abNameTab">
-    <hbox id="IdentityLinkContainer">
+    <hbox id="ABMAM_UseAccountContainer">
       <vbox valign="middle">
-        <label control="IdentityLink" value="&IdentityManager.cardDialog.propertyUseAccount;"/>
+        <label control="ABMAM_UseAccount"
+               value="&AddressBookMultiAccountsManager.cardDialog.propertyUseAccount.label;"/>
       </vbox>
-      <menulist id="IdentityLink">
+      <menulist id="ABMAM_UseAccount">
         <menupopup id="msgIdentityPopup" />
       </menulist>
     </hbox>

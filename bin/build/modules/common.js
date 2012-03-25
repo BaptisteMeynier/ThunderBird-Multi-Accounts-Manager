@@ -4,7 +4,7 @@ const Cc = Components.classes;
 const Ci = Components.interfaces;
 
 /**
- * XULSchool namespace.
+ * AddressBookMultiAccountsManager namespace.
  */
 if ("undefined" == typeof(AddressBookMultiAccountsManager)) {
   var AddressBookMultiAccountsManager = {};

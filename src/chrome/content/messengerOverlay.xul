@@ -3,20 +3,25 @@
 <?xml-stylesheet type="text/css" href="chrome://global/skin/" ?>
 
 
-<!DOCTYPE overlay SYSTEM
-  "chrome://IdentityManager/locale/IdentityManager.dtd">
 
-<overlay id="IdentityManager-messenger-overlay"
+<!DOCTYPE overlay SYSTEM
+  "chrome://AddressBookMultiAccountsManager/locale/AddressBookMultiAccountsManager.dtd">
+
+<overlay id="AddressBookMultiAccountsManager-messenger-overlay"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <script type="application/x-javascript"
-    src="chrome://IdentityManager/content/messengerOverlay.js" />
+    src="chrome://AddressBookMultiAccountsManager/content/messengerOverlay.js" />
 
-  <script type="application/x-javascript" src="chrome://IdentityManager/content/smartScan.js" />
+  <script type="application/x-javascript" src="chrome://AddressBookMultiAccountsManager/content/smartScan.js" />
+
+  <broadcasterset id="AddressBookMultiAccountsManager-broadcasterset">
+    <broadcaster id="AddressBookMultiAccountsManager-notification-broadcaster" />
+  </broadcasterset>
 
   <stringbundleset id="stringbundleset">
-    <stringbundle id="identitymanager-string-bundle"
-      src="chrome://IdentityManager/locale/IdentityManager.properties" />
+    <stringbundle id="AddressBookMultiAccountsManager-string-bundle"
+      src="chrome://AddressBookMultiAccountsManager/locale/AddressBookMultiAccountsManager.properties" />
   </stringbundleset>  
 
   

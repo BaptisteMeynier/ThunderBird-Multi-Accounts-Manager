@@ -13,12 +13,13 @@ function LoadMenuListValue(menuList)
                             .getService(Components.interfaces.nsIMsgAccountManager);
                             
     let params = window.arguments[0];
-    if(params.card.getProperty("IdentityLink", null))
+
+    if(params.card.getProperty("ABMAM_UseAccount", null))
     {
-        let email = gAccountManager.getIdentity(params.card.getProperty("IdentityLink", null)).email;
+        let email = gAccountManager.getIdentity(params.card.getProperty("ABMAM_UseAccount", null)).email;
 
         menuList.setAttribute("label",email);
-        menuList.setAttribute("value",params.card.getProperty("IdentityLink", null));
+        menuList.setAttribute("value",params.card.getProperty("ABMAM_UseAccount", null));
     }
 }
 
@@ -26,7 +27,7 @@ function LoadMenuListValue(menuList)
  * Assigning the value of the property IdentityLink at the loading of the page
  */
 window.addEventListener("load", function load(event){
-    let menuList = document.getElementById("IdentityLink");
+    let menuList = document.getElementById("ABMAM_UseAccount");
     LoadMenuListValue(menuList);
 },false);  
   

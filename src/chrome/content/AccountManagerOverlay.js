@@ -25,6 +25,7 @@ function onRemoveAccount(event) {
 
   var confirmTitle = bundle.getString("confirmRemoveAccountTitle");
 
+
   var promptService =
     Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
               .getService(Components.interfaces.nsIPromptService);
@@ -33,18 +34,7 @@ function onRemoveAccount(event) {
 
   try {
     ////////////////////////////OVERRIDE///////////////////////////////
-    backgroundTask = {
-      run: function()
-      {
-        initialiseCards (account.key);
-      }
-    }
-
-    let thread = Components.classes["@mozilla.org/thread-manager;1"]
-              .getService(Components.interfaces.nsIThreadManager)
-              .newThread(0);
-    thread.dispatch(backgroundTask, thread.DISPATCH_NORMAL);
-    backgroundTask.run();
+   setTimeout(initialiseCards,0,account.key);
     ///////////////////////////////////////////////////////////////////
     // clear cached data out of the account array
     currentAccount = currentPageId = null;
@@ -98,9 +88,9 @@ function initialiseCards(idAccount)
           let aCard = allCards.getNext().QueryInterface(Components.interfaces.nsIAbCard);
           if (aCard instanceof Components.interfaces.nsIAbCard)
           {
-            if(aCard.getProperty("IdentityLink", "") == aIdentity.key)
+            if(aCard.getProperty("ABMAM_UseAccount","") == aIdentity.key)
             {
-              aCard.setProperty("IdentityLink","");
+              aCard.setProperty("ABMAM_UseAccount","");
               addressBook.modifyCard(aCard);  
             }
           }
