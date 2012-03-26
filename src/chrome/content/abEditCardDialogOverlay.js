@@ -31,3 +31,6 @@ window.addEventListener("load", function load(event){
     LoadMenuListValue(menuList);
 },false);  
   
+ 
+document.getElementById("abcardWindow").setAttribute("ondialogaccept","ABMAM_updatecontact();return EditCardOKButton();"); 
+ 

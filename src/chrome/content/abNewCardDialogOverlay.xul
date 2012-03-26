@@ -12,6 +12,9 @@
   <script type="application/x-javascript"
     src="chrome://AddressBookMultiAccountsManager/content/abNewCardDialogOverlay.js" />
   
+  <script type="application/x-javascript"
+    src="chrome://AddressBookMultiAccountsManager/content/smartScan.js" />
+  
   <vbox id="abNameTab">
     <hbox id="ABMAM_UseAccountContainer">
       <vbox valign="middle">

@@ -2,37 +2,18 @@
    let _curentAddress = "";
    const Cc = Components.classes;
    const Ci = Components.interfaces;
-var OrignalCheckValidEmailAddressTMAM = CheckValidEmailAddress;
 
+
+var OrignalawRecipientTextCommandAMAM = awRecipientTextCommand;
 /**
- * Overlay of CheckValidEmailAddress witch is call when the user clic on the Send button
+ * Overlay of awRecipientTextCommand witch is call when the user press Enter in the "To" area
  */
-var CheckValidEmailAddress = function(to, cc, bcc) {
-   let stringBundle = document.getElementById("AddressBookMultiAccountsManager-string-bundle");
+var awRecipientTextCommand = function(userAction, element)
+{
+   OrignalawRecipientTextCommandAMAM.apply(this, arguments);
+
    AddressBookMultiAccountsManager.messengercomposeOverlay.drawNotificationIdentityManager();
-   let _afficher = 1;
-   let nBox = document.getElementById("attachmentNotificationBox");
-     if(nBox.getNotificationWithValue( 'value' )!=null ){
-         let prompts = Cc["@mozilla.org/embedcomp/prompt-service;1"].getService(Ci.nsIPromptService);
-         let retval = prompts.confirm(
-                        window,
-                        stringBundle.getString("AddressBookMultiAccountsManager.messengercompose.notification.title"),
-                        stringBundle.getString("AddressBookMultiAccountsManager.messengercompose.notification.alternate")
-                        );
-        if(retval){
-            AddressBookMultiAccountsManager.messengercomposeOverlay.saveChoice();
-            AddressBookMultiAccountsManager.messengercomposeOverlay.resetNotificationMultiAccount();
-            return OrignalCheckValidEmailAddressTMAM.apply(this, arguments);
-         }
-         else{
-            return retval;
-         }
-     }
-     
-      AddressBookMultiAccountsManager.messengercomposeOverlay.resetNotificationMultiAccount();
-      return OrignalCheckValidEmailAddressTMAM.apply(this, arguments);
-     
-}
+ }
 
 if ("undefined" == typeof(AddressBookMultiAccountsManager)) {
   var AddressBookMultiAccountsManager = {};
@@ -116,11 +97,11 @@ AddressBookMultiAccountsManager.messengercomposeOverlay = {
 		let m = acard.getProperty("ABMAM_UseAccount","");
                if(m==identityKey)
                {
-                  return "true";
+                  return true;
                }
                else
                {
-                  return "false";
+                  return false;
                }
             }
           }
@@ -145,8 +126,10 @@ AddressBookMultiAccountsManager.messengercomposeOverlay = {
    noNotification: function(){
       _afficher =1;
      let nBox = document.getElementById("attachmentNotificationBox");
+     if(nBox.getNotificationWithValue( 'value' )!=null )
      nBox.removeAllNotifications( false);
     AddressBookMultiAccountsManager.messengercomposeOverlay.drawNotificationIdentityManager();
+    _afficher =1;
  },
  
  
@@ -154,8 +137,79 @@ AddressBookMultiAccountsManager.messengercomposeOverlay = {
   * Main function witch display a notification box if it is needed
   */
   drawNotificationIdentityManager : function(){
+   let addBuffer = _curentAddress;
+   _curentAddress = "";
    let stringBundle = document.getElementById("AddressBookMultiAccountsManager-string-bundle");
-   if(_afficher == 1){
+    let nBox = document.getElementById("attachmentNotificationBox");
+      this.hdrParser = Components.classes["@mozilla.org/messenger/headerparser;1"]
+                           .getService(Components.interfaces.nsIMsgHeaderParser);
+                           
+      let adresse;
+      let i = 1;
+      let cpt =0;
+      while(document.getElementById("addressCol2#"+i)!=null){
+         var addr = document.getElementById("addressCol2#"+i).label;
+         let addresses = {};
+         var names = {};
+         var fullNames = {};
+         var count = 0;
+         var reformattedAddrs = "";
+
+         addr = this.hdrParser.parseHeadersWithArray(addr, addresses, names, fullNames, count); 
+         for(j=0;j<addresses.value.length;j++){
+            if(AddressBookMultiAccountsManager.messengercomposeOverlay.testLinked(addresses.value[j],document.getElementById("msgIdentity").value)==false){
+               _curentAddress=addresses.value[j];
+               cpt++;
+            }
+         }
+                i = i + 1;
+            
+         
+         
+        
+      }
+   
+     
+      if(cpt>0){
+         if(_curentAddress != addBuffer){
+            AddressBookMultiAccountsManager.messengercomposeOverlay.noNotification();
+            _afficher=1;
+         }
+         if(_afficher == 1){
+         let nBox = document.getElementById("attachmentNotificationBox");
+         const priority = nBox.PRIORITY_WARNING_MEDIUM;
+         var buttons = [{  
+         label: stringBundle.getString("AddressBookMultiAccountsManager.yes"),
+         accessKey: null,  
+         popup: null,
+         callback: AddressBookMultiAccountsManager.messengercomposeOverlay.yesNotification
+         }];
+         if(cpt == 1)
+         {
+            let text = stringBundle.getFormattedString("AddressBookMultiAccountsManager.messengercompose.notification.question",[_curentAddress]);
+            nBox.appendNotification(text, 'value' , 'chrome://browser/skin/Info.png' , priority , buttons );
+         }
+         else
+         {
+            nBox.appendNotification( stringBundle.getString("AddressBookMultiAccountsManager.messengercompose.notification.alternate"), 'value' , 'chrome://browser/skin/Info.png' , priority , buttons );
+         }
+   }
+   }
+   else{
+      if(nBox.getNotificationWithValue( 'value' )!=null ){
+      AddressBookMultiAccountsManager.messengercomposeOverlay.noNotification();
+      
+            _afficher=1;
+      }
+   }
+   
+   _afficher=0; 
+ },
+ /**
+  * Test if at least one To address is not linked with the choosen account
+  */
+ testNotificationIdentityManager : function(){
+   let stringBundle = document.getElementById("AddressBookMultiAccountsManager-string-bundle");
 
       this.hdrParser = Components.classes["@mozilla.org/messenger/headerparser;1"]
                            .getService(Components.interfaces.nsIMsgHeaderParser);
@@ -173,39 +227,19 @@ AddressBookMultiAccountsManager.messengercomposeOverlay = {
 
          addr = this.hdrParser.parseHeadersWithArray(addr, addresses, names, fullNames, count); 
          for(j=0;j<addresses.value.length;j++){
-            if(AddressBookMultiAccountsManager.messengercomposeOverlay.testLinked(addresses.value[j],document.getElementById("msgIdentity").value)=="false"){
-               _curentAddress=addresses.value[j];
+            if(AddressBookMultiAccountsManager.messengercomposeOverlay.testLinked(addresses.value[j],document.getElementById("msgIdentity").value)==false){
                cpt++;
             }
          }
-                i = i + 1;
-            
-         
-         
-        
+                i = i + 1;   
       }
       if(cpt>0){
-         let nBox = document.getElementById("attachmentNotificationBox");
-         const priority = nBox.PRIORITY_WARNING_MEDIUM;
-         var buttons = [{  
-         label: 'Oui',
-         accessKey: 'O',  
-         popup: null,
-         callback: AddressBookMultiAccountsManager.messengercomposeOverlay.yesNotification
-         }];
-         if(cpt == 1)
-         {
-            let text = stringBundle.getFormattedString("AddressBookMultiAccountsManager.messengercompose.notification.question",[_curentAddress]);
-            nBox.appendNotification(text, 'value' , 'chrome://browser/skin/Info.png' , priority , buttons );
-         }
-         else
-         {
-            nBox.appendNotification( stringBundle.getString("AddressBookMultiAccountsManager.messengercompose.notification.alternate"), 'value' , 'chrome://browser/skin/Info.png' , priority , buttons );
-         }
+         return true;
       }
-   }
+      else
+         return false;
    
-   _afficher=0; 
+   
  },
  /**
   * Save the choice of the user.
@@ -238,7 +272,8 @@ AddressBookMultiAccountsManager.messengercomposeOverlay = {
 /**
  * Events listeners
  */
-   document.getElementById("content-frame").addEventListener("click", function load(event){  AddressBookMultiAccountsManager.messengercomposeOverlay.drawNotificationIdentityManager();},false);  
+  
+   document.getElementById("msgcomposeWindow").addEventListener("click", function load(event){AddressBookMultiAccountsManager.messengercomposeOverlay.drawNotificationIdentityManager();},false);  
    document.getElementById("msgIdentity").onblur = AddressBookMultiAccountsManager.messengercomposeOverlay.noNotification;
    window.addEventListener("close", function load(event){  
       AddressBookMultiAccountsManager.messengercomposeOverlay.resetNotificationMultiAccount();

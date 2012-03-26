@@ -37,6 +37,19 @@ function LoadMenuList(elementMenuPopup)
 }
 
 /**
+ * Check if the same contact is in other nsIAbDirectory
+ */
+function ABMAM_updatecontact()
+{
+    emailContact = document.getElementById("PrimaryEmail").value;
+    identityKey = document.getElementById("ABMAM_UseAccount").value;
+    setTimeout(AddressBookMultiAccountsManager.SmartScan.updateContact,0,emailContact,identityKey);
+}
+
+document.getElementById("abcardWindow").setAttribute("ondialogaccept","ABMAM_updatecontact();return NewCardOKButton();");
+
+
+/**
  * As soon as the page loads, a comboBox is created with all the Identities
  */
 window.addEventListener("load", function load(event){
