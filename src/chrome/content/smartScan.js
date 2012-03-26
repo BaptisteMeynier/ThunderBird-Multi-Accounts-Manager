@@ -38,47 +38,49 @@ AddressBookMultiAccountsManager.SmartScan =
     for (let i = 0; i < accounts.Count(); i++)
     {
       let account = accounts.QueryElementAt(i, Components.interfaces.nsIMsgAccount);
-      let rootFolder = account.incomingServer.rootFolder; // nsIMsgFolder
       if(account.defaultIdentity)
       {
-        if (rootFolder.hasSubFolders)
-        {  
-          let subFolder = rootFolder.subFolders; // nsIMsgFolder  
-          AddressBookMultiAccountsManager.SmartScan.browseFolders(subFolder,account.defaultIdentity.key);
-        } 
+        AddressBookMultiAccountsManager.SmartScan.browseFolders(account);
       }
     }  
   },
   /**
    * Browse folders of type sentMail and Inbox then launches this.browserMessages for each of them.
    */
-  browseFolders : function (aFolder,identityKey)
+  browseFolders : function (aAccount)
   {
     const nsMsgFolderFlags = Components.interfaces.nsMsgFolderFlags;
     let res = new Array();
-    while(aFolder.hasMoreElements())
+    let rootFolder = aAccount.incomingServer.rootFolder; // nsIMsgFolder
+
+    if (rootFolder.hasSubFolders)
     {
-      let theSubFolder = aFolder.getNext().QueryInterface(Components.interfaces.nsIMsgFolder);
-      if(theSubFolder.isSpecialFolder(nsMsgFolderFlags.SentMail,false) ||
-                                  theSubFolder.isSpecialFolder(nsMsgFolderFlags.Inbox,false))
+      let aFolder = rootFolder.subFolders; // nsIMsgFolder  
+      while(aFolder.hasMoreElements())
       {
-        AddressBookMultiAccountsManager.SmartScan.browseMessages(theSubFolder,identityKey);
-      }
-      if(theSubFolder.hasSubFolders)
-      {
-        let aFolder2 = theSubFolder.subFolders;
-        while(aFolder2.hasMoreElements())
+        let theSubFolder = aFolder.getNext().QueryInterface(Components.interfaces.nsIMsgFolder);
+        if(theSubFolder.isSpecialFolder(nsMsgFolderFlags.SentMail,false) ||
+                                    theSubFolder.isSpecialFolder(nsMsgFolderFlags.Inbox,false))
         {
-          let theSubFolder2 = aFolder2.getNext().QueryInterface(Components.interfaces.nsIMsgFolder);
-          if(theSubFolder2.isSpecialFolder(nsMsgFolderFlags.SentMail,false) ||
-                                    theSubFolder2.isSpecialFolder(nsMsgFolderFlags.Inbox,false))
+          AddressBookMultiAccountsManager.SmartScan.browseMessages(theSubFolder,aAccount.defaultIdentity.key);
+        }
+        if(theSubFolder.hasSubFolders)
+        {
+          let aFolder2 = theSubFolder.subFolders;
+          while(aFolder2.hasMoreElements())
           {
-            AddressBookMultiAccountsManager.SmartScan.browseMessages(theSubFolder2,identityKey);
+            let theSubFolder2 = aFolder2.getNext().QueryInterface(Components.interfaces.nsIMsgFolder);
+            if(theSubFolder2.isSpecialFolder(nsMsgFolderFlags.SentMail,false) ||
+                                      theSubFolder2.isSpecialFolder(nsMsgFolderFlags.Inbox,false))
+            {
+              AddressBookMultiAccountsManager.SmartScan.browseMessages(theSubFolder2,aAccount.defaultIdentity.key);
+            }
           }
         }
       }
     }
   },
+  
   /**
    * Remove duplicates from an array
    */
@@ -168,7 +170,6 @@ AddressBookMultiAccountsManager.SmartScan =
       }
     }
   }
-
 }
 
 

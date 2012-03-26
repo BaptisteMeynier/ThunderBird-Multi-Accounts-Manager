@@ -29,7 +29,6 @@ AddressBookMultiAccountsManager.BrowserOverlay = {
   displayNotification : function()
   {
     let nBox = document.getElementById("mail-notification-box");
-    nBox.setAttribute("observes","AddressBookMultiAccountsManager-notification-broadcaster");
     let stringBundle = document.getElementById("AddressBookMultiAccountsManager-string-bundle");
     let text = stringBundle.getString("AddressBookMultiAccountsManager.notificationBox.label");
     let yes = stringBundle.getString("AddressBookMultiAccountsManager.notificationBox.validation");
